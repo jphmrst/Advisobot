@@ -1,2 +1,53 @@
 
 =The Advis-o-bot Project=
+
+For building a one-page (front and back, usually) handout for your
+student advisees.  If your university's advising information system
+interface is as user-hostile as ours is, then this tool might help
+make your advisee's lives a bit easier, and their plans a little
+clearer.
+
+The `sample` directory of the repository is an example of defining a
+file of advisees.
+
+==Common elements==
+
+ - An [[advisobot.core.Advisees]] instance is the top-level class for
+   defining your portfolio of advisees.
+
+   - The constructor arguments are the advisees (one
+     [[advisobot.core.Person]] instance per person).
+
+   - There are a number of fields which you must override in the
+     [[advisobot.core.Advisees]] instance body.
+
+ - Classes associated with defining a major/minor and its requirements
+
+   - ''FILL IN''
+
+ - Classes associated with defining one course which a student might
+   take, or which a program might require
+
+   - ''FILL IN''
+
+ - Classes associated with the translation to LaTeX
+
+   - ''FILL IN''
+
+ - Utility classes
+ 
+   - ''FILL IN''
+
+==The UWL model==
+
+Classes and objects relevant to the UWL model:
+
+ - [[uwlcs.advisobot.courses]] --- This package holds the long/ long
+   list of known courses
+
+ - [[uwlcs.advisobot.programs]] --- Defined UWL majors and minors
+
+ - [[uwlcs.advisobot.Suggestions]] --- An object of common suggested
+   classes
+
+ - [[uwlcs.advisobot.Notes]] --- Some commonly-included remarks
