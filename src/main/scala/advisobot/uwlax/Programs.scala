@@ -566,6 +566,49 @@ extends Program(
       ConditionsViewer(req=2, columns=4))
 }
 
+/** Requirements for a major in biology (as of 2020) */
+object BioMajor2020
+extends Program(
+  "Biology major", "Biology major",
+  BIO105, BIO203, BIO306, BIO307, BIO315, BIO491, STAT145, CHM103, CHM104,
+  Select("Advanced lab component", 1,
+         List(BIO302, BIO303, BIO304, BIO312, BIO313, BIO321, BIO333, BIO341,
+              BIO365, BIO401, BIO404, BIO405, BIO406, BIO408, BIO410, BIO412,
+              BIO413, BIO414, BIO419, BIO422, BIO436, BIO439, BIO440, BIO442,
+              MIC440, MIC442, BIO444, BIO447, BIO449, BIO456, BIO458, BIO467,
+              BIO468, MIC421)),
+  WithConditions(
+    "Biology electives",
+    AllSatisfying(
+      "Biology electives",
+      Select(
+        "Biology electives", 1,
+        List(BIO202, BIO210, BIO302, BIO303, BIO312, BIO313, BIO321, BIO330,
+             BIO333, BIO337, BIO341, BIO365, BIO401, BIO404, BIO405, BIO406,
+             BIO408, BIO410, BIO412, BIO413, BIO414, BIO415, BIO419, BIO422,
+             BIO424, BIO428, BIO429, BIO432, BIO435, BIO437, BIO439, BIO440,
+             BIO441, BIO442, BIO443, BIO444, BIO446, BIO447, BIO449, BIO456,
+             BIO458, BIO464, BIO465, BIO466, BIO467, BIO468, BIO473, BIO476,
+             BIO488, MIC230, MIC310, MIC350, MIC380, MIC410, MIC420, MIC421,
+             MIC427, MIC428, MIC434))),
+    List(UnitsCondition("total", 16),
+         UnitsCondition("at 400 level", 3,
+                        (c) => c.number>=400 && c.number<500))),
+  OneOf(
+    Select("Chemistry Option A", 2, List(CHM300, CHM302)),
+    Select("Chemistry Option B", 3, List(CHM303, CHM304, CHM302)),
+    Select("Chemistry Option C", 3, List(CHM303, CHM304, CHM305)))
+
+) {
+  override def viewers: List[Viewer] =
+    List(
+      new SimpleViewer("Biology major core", 5, 0, 1, 2, 3, 4, 5, 6, 7, 8),
+      new SimpleViewer("Lab component", 4, 9),
+      new SimpleViewer("Organic chemistry options", 4, 11),
+      ConditionsViewer(req=10, columns=5)
+    )
+}
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /** Requirements for a minor in psychology for CSH students (as of 2018) */
@@ -797,8 +840,56 @@ extends Program(
   })
 }
 
-/** Combination of UWL general education requirements and CSH degree requirements (as of 2018) */
+/** Combination of UWL general education requirements and CSH degree requirements (as of 2019) */
 object GenEdAndCHS2019
+extends Program(
+  "Gen. eds.", "General education and CSH requirements",
+  CST110, GE00_FYS_2019, GE01_ENG_2018, GE03_2018, GE04_HST_2018,
+  GE04_GMS_2018,
+  CHS_LabSci_2018, GE06_2018, GE07_2018, GE08_2018, GE09_2018
+) {
+  viewAsProgram = false
+  override def viewers: List[Viewer] =
+    List(new Viewer {
+      override def write(implicit doc: LaTeXdoc, who: Person,
+                         satisfiers: Map[Requirement,List[Achievement]]): Unit = {
+    doc ++= """      \begin{tabular}[t]{|c@{~}l@{~~}c@{~}l@{~~}c@{~}l@{~~}c@{~}l|}
+        \multicolumn{8}{c}{"""
+    doc ++= longName
+    doc ++= """}
+        \\ \hline """
+    GE00_FYS_2019.formatSatisfaction
+    doc ++= "\n          & "
+    GE04_GMS_2018.formatSatisfaction
+    doc ++= "\n          & "
+    CHS_LabSci_2018.formatSatisfaction
+    doc ++= "\n         \\\\ "
+    GE01_ENG_2018.formatSatisfaction
+    doc ++= "\n          & "
+    GE07_2018.formatSatisfaction
+    doc ++= "\n          & "
+    GE08_2018.formatSatisfaction
+    doc ++= "\n         \\\\ "
+    requirements(0).formatSatisfaction
+    doc ++= "\n          & "
+    GE04_HST_2018.formatSatisfaction
+    doc ++= "\n          & "
+    GE06_2018.formatSatisfaction
+    doc ++= "\n          & "
+    GE09_2018.formatSatisfaction
+    doc ++= "\n         \\\\ "
+    GE03_2018.formatSatisfaction
+    doc ++= "\n          & & &"
+
+    // $self->comingElectivesTabularList($who, $dest, @currentElectives, 8);
+
+    doc ++= "        \\\\ \\hline\n      \\end{tabular}\\reqBoxVspace\\\\\n";
+    }
+  })
+}
+
+/** Combination of UWL general education requirements and CSH degree requirements (current this is just the same as 2019; 2020 specifics are TODO) */
+object GenEdAndCHS2020
 extends Program(
   "Gen. eds.", "General education and CSH requirements",
   CST110, GE00_FYS_2019, GE01_ENG_2018, GE03_2018, GE04_HST_2018,
