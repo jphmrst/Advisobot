@@ -199,7 +199,7 @@ object ConditionsViewer {
 
 object OneOf {
   def apply(courses:Requirement*):Requirement =
-    Select(1, courses.to[List])
+    Select(1, courses.toList)
 }
 
 object HasSuffix {

@@ -46,44 +46,44 @@ private[courses]
 class CS(units:Int, num:Int, short:String, long:String, pre:List[Requirement])
 extends Course(units, "CS", num, None, short, long, pre) {
   def this(units:Int, num:Int, short:String, long:String, preqs:Requirement*) =
-    this(units, num, short, long, preqs.to[List])
+    this(units, num, short, long, preqs.toList)
   def this(units:Int, num:Int, name:String, preqs:Requirement*) =
-    this(units, num, name, name, preqs.to[List])
+    this(units, num, name, name, preqs: _*)
   def this(units:Int, num:Int, prerequisites:Requirement*) =
-    this(units, num, "CS"+num, "CS"+num, prerequisites.to[List])
+    this(units, num, "CS"+num, "CS"+num, prerequisites: _*)
 }
 
 private[courses]
 class MTH(units:Int, num:Int, short:String, long:String, pre:List[Requirement])
 extends Course(units, "MTH", num, None, short, long, pre) {
   def this(units:Int, num:Int, short:String, long:String, pre:Requirement*) =
-    this(units, num, short, long, pre.to[List])
+    this(units, num, short, long, pre.toList)
   def this(units:Int, num:Int, name:String, preqs:Requirement*) =
-    this(units, num, name, name, preqs.to[List])
+    this(units, num, name, name, preqs: _*)
   def this(units:Int, num:Int, prerequisites:Requirement*) =
-    this(units, num, "MTH"+num, "MTH"+num, prerequisites.to[List])
+    this(units, num, "MTH"+num, "MTH"+num, prerequisites: _*)
 }
 
 private[courses]
 class STAT(units:Int, num:Int, short:String,long:String, pre:List[Requirement])
 extends Course(units, "STAT", num, None, short, long, pre) {
   def this(units:Int, num:Int, short:String, long:String, preqs:Requirement*) =
-    this(units, num, short, long, preqs.to[List])
+    this(units, num, short, long, preqs.toList)
   def this(units:Int, num:Int, name:String, preqs:Requirement*) =
-    this(units, num, name, name, preqs.to[List])
+    this(units, num, name, name, preqs: _*)
   def this(units:Int, num:Int, prerequisites:Requirement*) =
-    this(units, num, "STAT"+num, "STAT"+num, prerequisites.to[List])
+    this(units, num, "STAT"+num, "STAT"+num, prerequisites: _*)
 }
 
 private[courses]
 class PHY(units:Int, num:Int, short:String, long:String, pre:List[Requirement])
 extends Course(units, "PHY", num, None, short, long, pre) {
   def this(units:Int, num:Int, short:String, long:String, preqs:Requirement*) =
-    this(units, num, short, long, preqs.to[List])
+    this(units, num, short, long, preqs.toList)
   def this(units:Int, num:Int, name:String, preqs:Requirement*) =
-    this(units, num, name, name, preqs.to[List])
+    this(units, num, name, name, preqs: _*)
   def this(units:Int, num:Int, prerequisites:Requirement*) =
-    this(units, num, "PHY"+num, "PHY"+num, prerequisites.to[List])
+    this(units, num, "PHY"+num, "PHY"+num, prerequisites: _*)
 }
 
 // =================================================================

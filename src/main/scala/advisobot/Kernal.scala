@@ -110,11 +110,11 @@ extends Achievement with Ordered[Course] with LaTeXRenderable {
 
   def this(units:Int, prefix:String, num:Int,
            short:String, long:String, pre:Requirement*) =
-    this(units, prefix, num, None, short, long, pre.to[List])
+    this(units, prefix, num, None, short, long, pre.toList)
   def this(units:Int, prefix:String, num:Int, name:String, pre:Requirement*) =
-    this(units, prefix, num, None, name, name, pre.to[List])
+    this(units, prefix, num, None, name, name, pre.toList)
   def this(units:Int, prefix:String, num:Int, pre:Requirement*) =
-    this(units, prefix, num, None, prefix+num, prefix+num, pre.to[List])
+    this(units, prefix, num, None, prefix+num, prefix+num, pre.toList)
 
   private var corequisites:List[Course] = List()
 
@@ -304,8 +304,8 @@ extends Requirement {
     }
     trace("Post-exit loop check: %d<%d && %s",
           satisfied, count, subreqIter.hasNext.toString())
-    val result = buffer.to[List]
-    satisfiers += (this -> buffer.to[List])
+    val result = buffer.toList
+    satisfiers += (this -> buffer.toList)
     traceEnd("Select.addSatisfiers")
     result match {
       case Nil => None
@@ -338,12 +338,12 @@ object Select {
 //  def apply(count:Int, reqs:List[Requirement]):Requirement =
 //    Select(reqs(0).name, reqs(0).name, count, reqs)
 //  def apply(count:Int, reqs:Requirement*):Requirement =
-//    Select(count, reqs.to[List])
+//    Select(count, reqs.toList)
 //  def apply(name:String, count:Int, reqs:Requirement*):Requirement =
-//    Select(name, name, count, reqs.to[List])
+//    Select(name, name, count, reqs.toList)
 //  def apply(short:String, long:String, count:Int,
 //            reqs:Requirement*):Requirement =
-//    Select(short, long, count, reqs.to[List])
+//    Select(short, long, count, reqs.toList)
 
 }
 
@@ -357,9 +357,9 @@ trait Viewer {
 abstract class Program(val name: String, val longName: String,
                        val requirements: List[Requirement]) {
   def this(name: String, longName: String, requirements: Requirement*) =
-    this(name, longName, requirements.to[List])
+    this(name, longName, requirements.toList)
   def this(name: String, requirements: Requirement*) =
-    this(name, name, requirements.to[List])
+    this(name, name, requirements.toList)
 
   def viewers: List[Viewer]
   var viewAsProgram = true
