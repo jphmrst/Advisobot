@@ -54,6 +54,17 @@ extends Course(units, "CS", num, None, short, long, pre) {
 }
 
 private[courses]
+class CPE(units:Int, num:Int, short:String, long:String, pre:List[Requirement])
+extends Course(units, "CPE", num, None, short, long, pre) {
+  def this(units:Int, num:Int, short:String, long:String, preqs:Requirement*) =
+    this(units, num, short, long, preqs.toList)
+  def this(units:Int, num:Int, name:String, preqs:Requirement*) =
+    this(units, num, name, name, preqs: _*)
+  def this(units:Int, num:Int, prerequisites:Requirement*) =
+    this(units, num, "CPE"+num, "CPE"+num, prerequisites: _*)
+}
+
+private[courses]
 class MTH(units:Int, num:Int, short:String, long:String, pre:List[Requirement])
 extends Course(units, "MTH", num, None, short, long, pre) {
   def this(units:Int, num:Int, short:String, long:String, pre:Requirement*) =
@@ -234,6 +245,28 @@ object CS751 extends CS(3, 751, "Seminar Sw. Eng.")
 object CS752 extends CS(3, 752, "Ind. Study")
 object CS798 extends VariableUnits("CS", 798, "Sw. Dev. Project",
                                    1, 6)
+
+object CPE105 extends CPE(1, 105, "Introduction to the Computing Environment")
+object CPE212 extends CPE(3, 212, "Digital Logic")
+object CPE309 extends CPE(3, 309, "Systems Development")
+object CPE321 extends CPE(3, 321, "Introduction to Digital Signal Processing")
+object CPE395 extends VariableUnits("CPE", 395, "Independent Study",
+                                    1, 3)
+object CPE406 extends CPE(3, 406, "Architecture of Parallel Systems")
+object CPE419 extends VariableUnits("CPE", 419,
+                                    "Topics in Computer Engineering",
+                                    1, 3)
+object CPE420 extends CPE(3, 420, "Digital Design")
+object CPE446 extends CPE(3, 446, "ASIC Design")
+object CPE463 extends CPE(3, 463, "Advanced Computer Architecture")
+object CPE466 extends CPE(3, 466, "Code Generation and Optimization")
+object CPE478 extends CPE(3, 478, "Virtual Machines")
+object CPE481 extends CPE(1, 481, "Professionalism in Engineering")
+object CPE483 extends CPE(1, 483, "Engineering Project Management")
+object CPE498 extends CPE(2, 498, "Senior Capstone")
+object CPE499 extends VariableUnits("CPE", 499,
+                                    "Research in Computer Engineering",
+                                    1, 3)
 
 // =================================================================
 // Section 4 --- Classes from other minors our advisees have

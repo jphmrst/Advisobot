@@ -540,6 +540,7 @@ object ScheduleSuggestion {
 }
 
 trait CourseSelection extends LaTeXRenderable {
+  def plainText: String
 }
 object CourseSelection {
   implicit def fromCourse(cl: Course): CourseSelection = new SpecificClass(cl)
@@ -549,6 +550,7 @@ object CourseSelection {
 
 class SpecificClass(val cl: Course) extends CourseSelection {
   override def toLaTeX(doc:LaTeXdoc): Unit = cl.toLaTeX(doc)
+  override def plainText: String = cl.tag()
 }
 
 class DescribedClasses(val desc: String) extends CourseSelection {
@@ -557,6 +559,7 @@ class DescribedClasses(val desc: String) extends CourseSelection {
     doc ++= desc
     doc ++= "\\end{tabular}"
   }
+  override def plainText: String = desc.replace("\\\\"," ")
 }
 
 class PickOneSelection(val selections: Seq[CourseSelection])
@@ -570,6 +573,18 @@ extends CourseSelection {
       sep = """\\ -or- \\ """
     }
     doc ++= """\end{tabular}"""
+  }
+  override def plainText: String = {
+    val sb = new StringBuilder()
+
+    var sep = ""
+    for(selection <- selections) {
+      sb ++= sep
+      sb ++= selection.plainText
+      sep = " or "
+    }
+
+    sb.toString()
   }
 }
 

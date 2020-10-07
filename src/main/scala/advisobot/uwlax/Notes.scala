@@ -20,11 +20,15 @@ object Notes {
   /** When I will remove the advising hold, and also note that they are doing well. */
   val WELL_REMOVING_HOLD = item(
     "Let me know if you have other questions about your next steps.  From what I see, you have been choosing classes well, and doing well in them.",
-    "I do normally prefer in-person advising, but under the current circumstances I think we can skip ours this semester, so I will be removing the advising hold from your account in the next few days.",
-    "However, if you have questions and do want to have a video meeting, of course I am happy to do so, and in the next few days will be sending out instruction for scheduling an appointment.")
+    "I normally require an advising meeting, but I think we can skip ours this semester.  So I will be removing the advising hold from your account.",
+    "However, if you have questions and do want to have a video meeting, of course I am happy to do so, and will be sending an email soon with instructions for scheduling an appointment.")
+
+  /** When I will remove the advising hold, and note the rest is obvious. */
+  val CLEAR_REMOVING_HOLD = item(
+    "The classes you need to take at this point are clear.  So I think we can skip an advising meeting this semester, and will remove any advisor's hold on your registration.  However if you have questions and do want to have a video meeting, then of course I am happy to do so, and will be sending an email soon with instructions for scheduling an appointment.")
 
   /** Expect a telecon before removing the advising hold. */
-  val REQUIRE_TELECON = "We should meet to go over your progress this semester, and to discuss this course plan.  I will be in touch in the next few days to arrange a teleconference."
+  val REQUIRE_TELECON = "We should meet to go over your progress this semester, and to discuss this course plan.  I will be sending an email soon with instructions for scheduling an appointment."
 
   /** Check the total unit on WINGS because of retakes. */
   val RETAKES_SO_WINGS = "You have retaken one or more classes, so the total units on this page may be an overestimate.  Check with WINGS to make sure you are on track for the 120-unit graduation requirement."
@@ -53,6 +57,9 @@ object Notes {
   /** Check with minor department about offering patterns. */
   val ASK_MIN_SCHED = "You should check with your minor department about the order and scheduling of their classes.  Some classes may not be offered every semester, may have a recomended order, etc."
 
+  /** Check with minor department about offering patterns. */
+  val GENED_WAIT = "As you pick your classes, I would suggest that you wait to take more general education classes until later in your degree.  These classes tend to be less demanding than the upper-level classes you will take for your major, and it can be nice to have a few gen.-eds.\\ for the later semesters."
+
   /** After below-15-unit semesters. */
   val EXPECT_HEAVY_SEMESTER = "One of the requirements for graduation is to complete 120 units of coursework, which averages over four years to 15 units per semester.  Since you have had a few semesters with fewer than 15 units/repeated classes, you should expect to have a heavy semester or two coming up.  Alternatively, you could look for classes to take over summers or J-terms."
 
@@ -61,6 +68,15 @@ object Notes {
 
   /** Bloody get going for a four-year completion. */
   val START_120 = "It is time to start taking classes in your major.  It takes time to satisfy the CS requirements, and continuing to wait to take CS120 may make it hard to graduate in four years.  Contact the professor of the CS120 section in which you would prefer to enroll to discuss your situation."
+
+  /** Think about a minor. */
+  val CONSIDER_MINOR = item(
+    "The College of Science and Health requires all students with no minor or second major to take eighteen units from outside of CS.  You should start taking some of those courses now.  Twelve of the eighteen units must be upper-level, so you may need some time to satisfy their prerequisites.",
+    "Alternatively, you might think about a minor that would interest you.  The 18-unit requirement goes away when you have declared a minor or second major with the Dean's office.")
+
+  /** Think about a math minor, since you've already taken MTH309. */
+  val CONSIDER_MATH_MINOR_309 = item(
+    "The College of Science and Health requires all students with no minor or second major to take eighteen units from outside of CS.  However, the 18-unit requirement goes away when you have declared a minor or second major with the Dean's office.  With MTH\\,309, you will have most of the requirements for a math minor satisfied.  So by declaring a math minor, you would have more flexibility in your choice of classes.")
 
   /** Variation for new change-of-majors. */
   val START_120_MAJOR_CHANGE = "It is particularly important to start taking classes in the CS major.  During the next two semesters you will be taking the introductory sequence, which limits you to a few CS classes per semester.  Make sure you stick to the recommended CS classes for each semester, since there is a firm prerequisite structure at the beginning of the major.  If a class you need is full, contact the professor of the section in which you would prefer to enroll to discuss your situation, and be flexible about registering in other sections."

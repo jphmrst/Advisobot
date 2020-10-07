@@ -467,6 +467,36 @@ extends Program(
       new SimpleViewer("Spanish minor core", 3, 0, 1, 2, 3, 4, 5))
 }
 
+object Philosophy2ndMajor2020
+extends Program(
+  "Phil. 2nd maj.", "Philosophy second major",
+  OneOf(PHL100, PHL200), PHL101, OneOf(PHL201, PHL303),
+  PHL205, PHL206, PHL496,
+  WithConditions(
+    "Advanced philosophy electives",
+    AllSatisfying("300/400",
+                  AtLevel("300/400",
+                          "PHL", (x:Int) => (x>=300 && x<500))),
+    List(
+      UnitsCondition("total", 6)
+    )),
+  WithConditions(
+    "Additional philosophy electives",
+    AllSatisfying("Electives",
+                  AtLevel("Electives",
+                          "PHL", (x:Int) => (x!=494 && x!=495 && x!=497))),
+    List(
+      UnitsCondition("total", 6)
+    ))) {
+
+  override def viewers: List[Viewer] =
+    List(
+      new SimpleViewer("Philosophy core", 3, 0, 1, 2, 3, 4, 5),
+      ConditionsViewer(req=6, columns=6),
+      ConditionsViewer(req=7, columns=6))
+}
+
+
 /** Requirements for a minor in Spanish (as of 2019) */
 object SpanishMinor2019
 extends Program(
@@ -879,7 +909,7 @@ extends Program(
     GE09_2018.formatSatisfaction
     doc ++= "\n         \\\\ "
     GE03_2018.formatSatisfaction
-    doc ++= "\n          & & &"
+    doc ++= "\n          & & & & & &"
 
     // $self->comingElectivesTabularList($who, $dest, @currentElectives, 8);
 
@@ -887,6 +917,27 @@ extends Program(
     }
   })
 }
+
+object CHS2018 extends Program(
+  "CSH requirements", "College of Science and Health requirements",
+  CHS_LabSci_2018
+) {
+  viewAsProgram = false
+  override def viewers: List[Viewer] =
+    List(new Viewer {
+      override def write(implicit doc: LaTeXdoc, who: Person,
+                         satisfiers: Map[Requirement,List[Achievement]]): Unit = {
+    doc ++= """      \begin{tabular}[t]{|c@{~}l@{~~}c@{~}l|}
+        \multicolumn{4}{c}{"""
+    doc ++= name
+    doc ++= """}
+        \\ \hline """
+    CHS_LabSci_2018.formatSatisfaction
+    doc ++= "\n        \\\\ \\hline\n      \\end{tabular}\\reqBoxVspace\\\\\n";
+    }
+  })
+}
+
 
 /** Combination of UWL general education requirements and CSH degree requirements (current this is just the same as 2019; 2020 specifics are TODO) */
 object GenEdAndCHS2020
@@ -927,7 +978,7 @@ extends Program(
     GE09_2018.formatSatisfaction
     doc ++= "\n         \\\\ "
     GE03_2018.formatSatisfaction
-    doc ++= "\n          & & &"
+    doc ++= "\n          & & & & & &"
 
     // $self->comingElectivesTabularList($who, $dest, @currentElectives, 8);
 

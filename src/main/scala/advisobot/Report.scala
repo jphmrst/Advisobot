@@ -266,6 +266,7 @@ extends PersonReport {
       doc ++= "    \\newlength{\\gradewidth}\n"
       doc ++= "    \\newlength{\\spacewidth}\n"
       doc ++= "    \\newlength{\\namewidth}\n"
+      doc ++= "    \\newlength{\\fullwidth}\n"
       doc ++= "    \\newlength{\\nameonlywidth}\n"
       doc ++= "    \\settowidth{\\codewidth}{MTH\\,388}\n"
       doc ++= "    \\settowidth{\\unitswidth}{88}\n"
@@ -275,6 +276,10 @@ extends PersonReport {
       doc ++= "    \\settowidth{\\nameonlywidth}{~}\n"
       doc ++= "    \\addtolength{\\nameonlywidth}{\\namewidth}\n"
       doc ++= "    \\addtolength{\\nameonlywidth}{\\gradewidth}\n"
+      doc ++= "    \\settowidth{\\fullwidth}{~~~}\n"
+      doc ++= "    \\addtolength{\\fullwidth}{\\codewidth}\n"
+      doc ++= "    \\addtolength{\\fullwidth}{\\nameonlywidth}\n"
+      doc ++= "    \\addtolength{\\fullwidth}{\\unitswidth}\n"
 
       for (semester <- who.past.keys) {
         var totalUnits: Int = 0
@@ -313,7 +318,20 @@ extends PersonReport {
           doc ++= course.units.toString()
           doc ++= " \\\\\n"
         }
-        doc ++= s"\\hline\\multicolumn{3}{@{}c@{}}{Total semester units: $totalUnits}\\end{tabular}\n\\\\[2pt]\n"
+        doc ++= s"\\hline\\multicolumn{3}{@{}c@{}}{Total semester units: $totalUnits}\n"
+
+        if (who.recommend.contains(lastPast)) {
+          doc ++= "\\\\[2pt]\\multicolumn{3}{@{\\,}p{\\fullwidth}@{\\,}}{Recommended in advising: \\raggedright "
+          var recSep = ""
+          for (rec <- who.recommend(lastPast)) {
+            doc ++= recSep
+            doc ++= rec.description.plainText
+            recSep = "; "
+          }
+          doc ++= ".}\n"
+        }
+
+        doc ++= "\\end{tabular}\n\\\\[2pt]\n"
       }
 
       doc ++= "    \\end{multicols}\n"
