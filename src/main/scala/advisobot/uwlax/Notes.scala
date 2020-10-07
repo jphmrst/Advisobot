@@ -15,17 +15,17 @@ object Notes {
                       "The classes you are currently taking this semester.  Have you dropped any which I have not noticed (or do you plan to do so)?")
 
   /** When I will remove the advising hold. */
-  val REMOVING_HOLD = "Let me know if you have other questions about your next steps.  I do not believe I have any further questions or concerns, and will be removing the advising hold from your account in the next few days."
+  val REMOVING_HOLD = "Let me know if you have other questions about your next steps.  I do not believe I have any further questions or concerns, and will be removing any advising hold that the Records Office places on your account."
 
   /** When I will remove the advising hold, and also note that they are doing well. */
   val WELL_REMOVING_HOLD = item(
     "Let me know if you have other questions about your next steps.  From what I see, you have been choosing classes well, and doing well in them.",
-    "I normally require an advising meeting, but I think we can skip ours this semester.  So I will be removing the advising hold from your account.",
+    "I normally require an advising meeting, but I think we can skip ours this semester.  So I will be removing any advising hold from your account when the Records Office adds them.",
     "However, if you have questions and do want to have a video meeting, of course I am happy to do so, and will be sending an email soon with instructions for scheduling an appointment.")
 
   /** When I will remove the advising hold, and note the rest is obvious. */
   val CLEAR_REMOVING_HOLD = item(
-    "The classes you need to take at this point are clear.  So I think we can skip an advising meeting this semester, and will remove any advisor's hold on your registration.  However if you have questions and do want to have a video meeting, then of course I am happy to do so, and will be sending an email soon with instructions for scheduling an appointment.")
+    "The classes you need to take at this point are clear.  So I think we can skip an advising meeting this semester, and will remove any advisor's hold on your registration when the Records Office adds them.  However if you have questions and do want to have a video meeting, then of course I am happy to do so, and will be sending an email soon with instructions for scheduling an appointment.")
 
   /** Expect a telecon before removing the advising hold. */
   val REQUIRE_TELECON = "We should meet to go over your progress this semester, and to discuss this course plan.  I will be sending an email soon with instructions for scheduling an appointment."
