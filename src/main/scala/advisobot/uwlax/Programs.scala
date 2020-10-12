@@ -1,4 +1,3 @@
-
 package uwlcs.advisobot.programs
 import scala.collection.Map
 import scala.collection.mutable.HashMap
@@ -19,9 +18,9 @@ object CSmajor2018 extends Program(
                  AllSatisfying("CS elective classes",
                                Select("CS elective class", 1,
                                       List(CS202, CS224gen, CS224python, CS272,
-                                           PHY335, MTH317, MTH371, CS342,
-                                           CS351, CS352, CS353, CS364, CS372,
-                                           CourseOfUnits("CS", 395),
+                                           CS227, PHY335, MTH317, MTH371,
+                                           CS342,  CS351, CS352, CS353, CS364,
+                                           CS372, CourseOfUnits("CS", 395),
                                            CS402, CS410, CS418,
                                            CS419ml, CS419opt, CS419gen,
                                            CS431, CS446, CS449, CS451, CS452,
@@ -55,7 +54,7 @@ object CSmajorEmbeddedEmph2019 extends Program(
                                       List(CS202, CS224gen, CS224python, CS272,
                                            PHY335, MTH317, MTH371, CS342,
                                            CS351, CS352, CS353, CS364, CS372,
-                                           CourseOfUnits("CS", 395),
+                                           CourseOfUnits("CS", 395), CS227,
                                            CS402, CS410, CS418,
                                            CS419ml, CS419opt, CS419gen,
                                            CS431, CS446, CS449, CS451, CS452,
@@ -90,7 +89,7 @@ object SE5year2018 extends Program(
                                       List(CS202, CS224gen, CS224python, CS272,
                                            PHY335, MTH317, MTH371, CS342,
                                            CS351, CS352, CS353, CS372,
-                                           CourseOfUnits("CS", 395),
+                                           CourseOfUnits("CS", 395), CS227,
                                            CS402, CS410, CS418,
                                            CS419ml, CS419opt, CS419gen,
                                            CS431, CS446, CS449, CS451, CS452,
@@ -136,7 +135,7 @@ object SE5yearPre2018 extends Program(
                  AllSatisfying("CS elective classes",
                                Select("CS elective class", 1,
                                       List(CS202, CS224gen, CS224python, CS272,
-                                      PHY335, MTH317, MTH371, CS342,
+                                      PHY335, MTH317, MTH371, CS227, CS342,
                                       CS351, CS352, CS353, CS364, CS372,
                                       CourseOfUnits("CS", 395),
                                       CS402, CS410, CS418,
@@ -1077,8 +1076,8 @@ private[programs]
 object GE07_2018 extends Select(
   "Humanistic",
   "Humanistic studies: the search for values and meaning (GE 07)", 1,
-  List(CHI305, ENG200, ENG201, ENG202, ENG203, ENG204,
-  ENG205, ENG206, FRE395, GER399, MLG299, RUS305,
+  List(PHL100, CHI305, ENG200, ENG201, ENG202, ENG203, ENG204,
+  ENG205, ENG206, FRE395, GER399, HIS205, MLG299, PHL200, POL251, RUS305,
 
   // Transfer credits
   HasSuffix("Lower-division GE7 transfer course", "E"),
