@@ -1139,6 +1139,7 @@ object ENG308 extends Course(3, "ENG", 308, "Technical Writing", "Technical Writ
 object ENG309 extends Course(3, "ENG", 309, "Writing in the Sciences", "Writing in the Sciences")
 object ENG310 extends Course(3, "ENG", 310, "Digi Content/Mgmt/Exper Design", "Digital Content Writing, Management, and Experience Design")
 object ENG311 extends Course(3, "ENG", 311, "Critical Theory", "Critical Theory")
+object ENG312 extends Course(3, "ENG", 312, "Literature, Medicine, and Culture", "Literature, Medicine, and Culture")
 object ENG313 extends Course(3, "ENG", 313, "Prose Style/Editng", "Prose Style and Editing")
 object ENG314 extends Course(3, "ENG", 314, "Grant Writing", "Grant Writing")
 object ENG317 extends Course(3, "ENG", 317, "Writing for Stage & Screen", "Writing for Stage and Screen")

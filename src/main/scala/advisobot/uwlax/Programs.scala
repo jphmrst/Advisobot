@@ -389,6 +389,53 @@ extends Program("French minor",
          ConditionsViewer(req=6, columns=5))
 }
 
+/** Requirements for a minor in French (as of 2018) */
+object CreativeWritingMinor2020
+extends Program("Creative writing minor", "Creative writing minor",
+                ENG305,
+                WithConditions(
+                  "Creative writing --- writing, language and publishing courses",
+                  AllSatisfying(
+                    "Writing, language and publishing",
+                    Select("Elective", "Electives", 1,
+                           List(ENG313, ENG314, ENG317, ENG320, ENG325,
+                                ENG326, ENG327, ENG330, ENG331, ENG332,
+                                ENG335, ENG337, ENG339, ENG343, ENG416,
+                                ENG417, ENG433))),
+                  List(
+                    UnitsCondition("total", 3)
+                  )),
+                Select("Forms requirement",
+                       "Forms of fiction or poetry", 1,
+                       List(ENG446, ENG449)),
+                Select("Seminar requirement",
+                       "Seminar in fiction or poetry", 1,
+                       List(ENG416, ENG417)),
+                WithConditions(
+                  "Creative writing --- literature electives",
+                  AllSatisfying(
+                    "Literature",
+                    Select("Elective", "Electives", 1,
+                           List(ENG301, ENG302, ENG312, ENG342, ENG344,
+                                ENG348, ENG349, ENG356, ENG357, ENG361,
+                                ENG362, ENG363, ENG364, ENG366, ENG367,
+                                ENG368, ENG370, ENG371, ENG372, ENG380,
+                                ENG381, ENG382, ENG385, ENG387,
+                                CourseOfUnits("ENG", 403, 3),
+                                ENG446, ENG449, ENG462, ENG470, ENG481,
+                                ENG495))),
+                  List(
+                    UnitsCondition("total", 6),
+                    UnitsCondition("at 400-level", 3, _.number>=400)
+                  ))
+) {
+
+  override def viewers: List[Viewer] =
+    List(new SimpleViewer("Creative Writing minor core", 3,  0, 2, 3),
+         ConditionsViewer(req=1, columns=3),
+         ConditionsViewer(req=4, columns=3))
+}
+
 /** Requirements for a minor in German (as of 2018) */
 object GermanMinor2018
 extends Program(
