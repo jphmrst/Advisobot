@@ -64,7 +64,7 @@ extends Term {
     doc ++= year.toString()
   }
 
-  def compare(o: Term): Int = o match {
+  override def compare(o: Term): Int = o match {
     case (that: Semester) => code - that.code
     case _ => -1
   }
@@ -120,6 +120,7 @@ object Suggestions {
   val UPPER_CS_ELECTIVE =
     new ScheduleSuggestion("CS elective\\\\(300/400-lv.)", 3)
   val GRAD_CS_ELECTIVE = new ScheduleSuggestion("CS elective (500-lv.)", 3)
+  val MATH_ELECTIVE = new ScheduleSuggestion("Math elective", 3)
   val MINOR_ELECTIVE3 = new ScheduleSuggestion("Minor elective", 3)
   val MINOR_ELECTIVE = new ScheduleSuggestion("Minor elective", UnitsRange.atLeast(1))
   val GENED = new ScheduleSuggestion("Gen.\\ ed. elective",

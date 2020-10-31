@@ -2,7 +2,7 @@
 package advisobot.core
 import scala.language.implicitConversions
 import scala.collection.{Map,SortedMap} // {Iterable,Map,Set,Seq}
-import scala.collection.mutable.{HashSet,HashMap,ListBuffer}
+import scala.collection.mutable.{Builder,HashSet,HashMap,ListBuffer}
 import java.nio.file.{Paths, Files}
 import org.maraist.latex.{LaTeXdoc,LaTeXRenderable}
 import org.maraist.util.UniqueHashCode
@@ -268,7 +268,7 @@ case class Require(val course:Course) extends Requirement {
     doc ++= course.number.toString()
   }
   override val count: Int = 1
-  override def name: String = course.tag
+  override def name: String = course.tag()
 }
 
 case class Select(val shortName:String, val longName:String,
@@ -286,7 +286,7 @@ extends Requirement {
     trace("Initial loop check %d<%d && %s",
           satisfied, count, subreqIter.hasNext.toString())
     while (satisfied<count && subreqIter.hasNext) {
-      val thisSubreq = subreqIter.next
+      val thisSubreq = subreqIter.next()
       traceBegin("while body", "%s", thisSubreq.name)
       thisSubreq.addSatisfiers(who, satisfiers, checkset) match {
         case Some(steps) => {
@@ -440,13 +440,58 @@ class Person(val id:String, val firstNames:String, val lastName:String,
          current, past, true, otherUnits, recommend, notes)
 
   def isCompleted(c:Course):Boolean = completed.contains(c)
-  def completed = {
+  def completed: List[Course] = {
     val result = new scala.collection.mutable.ListBuffer[Course]
     for (results <- past.values; (course, grade) <- results; if grade.pass) {
       result += course
     }
     result.result()
   }
+
+  def completions: SortedMap[Course,Grade] = {
+    val builder: Builder[(Course,Grade), SortedMap[Course,Grade]] =
+      SortedMap.newBuilder[Course,Grade]
+
+    for ((term, results) <- past; (course, grade) <- results) {
+      builder += ((course, grade))
+    }
+
+    val result = builder.result()
+    result
+  }
+
+  /**
+   * Return the number of units earned in past terms, including units
+   * given in otherUnits.
+   */
+  def unitsCompleted: Int = {
+    var total = otherUnits
+    for((course, grade) <- completions; if grade.pass) {
+      total = total + course.units
+    }
+    total
+  }
+
+  /**
+   * Return the number of units earned in past terms plus what
+   * might be earned this term, including units given in otherUnits,
+   * avoiding duplicate (grade-replacement) classes.
+   */
+  def unitsProspective: Int = {
+    var total = otherUnits
+
+    for(course <- current) {
+      total = total + course.units
+    }
+
+    for((course, grade) <- completions;
+        if grade.pass && !(current.contains(course))
+      ) {
+      total = total + course.units
+    }
+    total
+  }
+
   def willHaveCompleted(c:Course):Boolean = isCompleted(c) || isCurrent(c)
   def isCurrent(a:Achievement):Boolean = a match {
     case c:Course => current.contains(c)
@@ -674,6 +719,7 @@ object UnitsRange {
 
 abstract class Advisees(people:Person*) {
   implicit def cohort: Advisees = this
+  val runOnly: Option[Int]
   val forTerm: Term
   val lastPast: Term
   val institutionShortName: String
@@ -692,22 +738,33 @@ abstract class Advisees(people:Person*) {
     person.lastName + person.firstNames.replaceAll(" ", "")
 
   def reports(): Unit = {
-    var i: Int = 0
     if (verbosity>0) println("Processing " + people.size + " advisee records")
-    for (person <- people) {
-      i = i+1
-      if (verbosity>1)  print(s" $i. $person")
-      if (person.active) {
-        if (verbosity>1) println("...")
-        val doc = new LaTeXdoc(reportDirectory + "/"
-                               + getHandoutFileRoot(person))
-        person.writeHandout(doc)
-        doc.close()
-      } else {
-        if (verbosity>1) println(" --- not active")
+    runOnly match {
+      case Some(idx) => {
+        report(people(idx), 1)
+      }
+      case None => {
+        var i: Int = 0
+        for (person <- people) {
+          i = i+1
+          report(person, i)
+        }
+        if (verbosity>1) println("Finished")
       }
     }
-    if (verbosity>1) println("Finished")
+  }
+
+  private def report(person: Person, i: Int): Unit = {
+    if (verbosity>1)  print(s" $i. $person")
+    if (person.active) {
+      if (verbosity>1) println("...")
+      val doc = new LaTeXdoc(reportDirectory + "/"
+                             + getHandoutFileRoot(person))
+      person.writeHandout(doc)
+      doc.close()
+    } else {
+      if (verbosity>1) println(" --- not active")
+    }
   }
 
   def main(args: Array[String]): Unit = {

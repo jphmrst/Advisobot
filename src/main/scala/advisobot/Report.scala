@@ -81,7 +81,7 @@ extends PersonReport {
     \& Registration databases.  GPA calculations are approximate.
     Consult WINGS for official status information.}}}""")
 
-    doc.open
+    doc.open()
     doc ++= """
 \parindent 0pt
 \newcommand{\Semester}{""" + forTerm + """}
@@ -118,9 +118,9 @@ extends PersonReport {
       }
     }
 
-    val pastUnits = who.otherUnits + who.completed.foldLeft(0)(_+_.units)
+    val pastUnits = who.unitsCompleted
     val currentUnits = who.current.foldLeft(0)(_+_.units)
-    val totalUnits = pastUnits + currentUnits
+    val totalUnits = who.unitsProspective
     if (totalUnits > 0) {
       doc ++= "  \\\\ \\multicolumn{2}{|l|}{Units}\n"
       doc ++= "  \\\\ \\multicolumn{2}{|c|}{\\large \\textbf{Previously --- "
