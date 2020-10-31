@@ -321,7 +321,7 @@ extends PersonReport {
         doc ++= s"\\hline\\multicolumn{3}{@{}c@{}}{Total semester units: $totalUnits}\n"
 
         if (who.recommend.contains(lastPast)) {
-          doc ++= "\\\\[2pt]\\multicolumn{3}{@{\\,}p{\\fullwidth}@{\\,}}{Recommended in advising for current enrollment: \\raggedright "
+          doc ++= "\\\\[2pt]\\multicolumn{3}{@{\\,}p{\\fullwidth}@{\\,}}{Advising for current enrollment had recommended: \\raggedright "
           var recSep = ""
           for (rec <- who.recommend(lastPast)) {
             doc ++= recSep
