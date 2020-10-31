@@ -321,7 +321,7 @@ extends PersonReport {
         doc ++= s"\\hline\\multicolumn{3}{@{}c@{}}{Total semester units: $totalUnits}\n"
 
         if (who.recommend.contains(lastPast)) {
-          doc ++= "\\\\[2pt]\\multicolumn{3}{@{\\,}p{\\fullwidth}@{\\,}}{Recommended in advising: \\raggedright "
+          doc ++= "\\\\[2pt]\\multicolumn{3}{@{\\,}p{\\fullwidth}@{\\,}}{Recommended in advising for current enrollment: \\raggedright "
           var recSep = ""
           for (rec <- who.recommend(lastPast)) {
             doc ++= recSep
@@ -364,6 +364,7 @@ extends PersonReport {
     if (nowOrForward.size > 1) {
       doc ++= "\\section*{Forward plan}\n\\raggedright\n"
       doc ++= "\\begin{multicols}{4}\n"
+      var postPlanUnits: UnitsRange = new UnitsRange(who.unitsProspective)
 
       for ((semester, plan) <- nowOrForward) {
         doc ++= """\begin{tabular}[t]{|c|l|} \multicolumn{2}{c}{\emph{"""
@@ -378,11 +379,14 @@ extends PersonReport {
         }
         doc ++= """\\ \hline \multicolumn{2}{c}{"""
         totalUnits.toLaTeX(doc)
+        postPlanUnits = postPlanUnits.and(totalUnits)
         doc ++= " total units}\n"
         doc ++= "\\end{tabular} \\hspace{1ex}\n"
       }
 
-      doc ++= "\\end{multicols}\n"
+      doc ++= "\\end{multicols}\nTotal units after planned period: "
+      postPlanUnits.toLaTeX(doc)
+      doc ++= "\n"
     }
 
     traceEnd("writeHandout", "%s %s", who.firstNames, who.lastName)

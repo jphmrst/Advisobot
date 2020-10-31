@@ -667,6 +667,7 @@ object NoLoadInfo {
 class UnitsRange(val lowerBound: Int, val upperBound: Option[Int])
 extends Loading {
   def this() = this(0, None)
+  def this(exact: Int) = this(exact, Some(exact))
   def this(lower: Int, upper: Int) = this(lower, Some(upper))
   override def or(l: Loading): UnitsRange = l match {
     case _: NoLoadInfo => this
@@ -696,6 +697,15 @@ extends Loading {
       }
       new UnitsRange(newLower, newUpper)
     }
+  }
+
+  def and(i: Int): UnitsRange = {
+    val newLower: Int = lowerBound + i
+    val newUpper: Option[Int] = upperBound match {
+      case Some(ub) => Some(ub + i)
+      case None => None
+    }
+    new UnitsRange(newLower, newUpper)
   }
 
   override def toLaTeX(doc:LaTeXdoc): Unit = {
