@@ -112,7 +112,6 @@ object Suggestions {
   val ELECTIVE = new ScheduleSuggestion("Elective", 3)
   val ELECTIVE1 = new ScheduleSuggestion("Elective", 1)
   val ELECTIVE2 = new ScheduleSuggestion("Elective", 2)
-  val ELECTIVE4 = new ScheduleSuggestion("Elective", 4)
   def electivesTotalling(units: Int) =
     new ScheduleSuggestion("Electives", units)
   val LAB_SCIENCE = new ScheduleSuggestion("A lab science", 4)
