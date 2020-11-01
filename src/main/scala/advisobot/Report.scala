@@ -259,6 +259,8 @@ extends PersonReport {
     doc ++= "\n    \\clearpage\n\n"
 
     if (who.past.size > 0 || who.current.size > 0) {
+      val mostRecent = who.mostRecentlyTaken(lastPast)
+
       doc ++= "\\section*{Course history}\n"
       doc ++= "  \\begin{multicols}{3}\\raggedcolumns\\small\\setlength\\columnsep{1em}\n"
       doc ++= "    \\newlength{\\codewidth}\n"
@@ -289,15 +291,32 @@ extends PersonReport {
         doc ++= "}} \\\\ \\hline\n"
 
         for ((course, grade) <- who.past(semester)) {
+          val precolor = mostRecent(course).equals(semester) match {
+            case true => ""
+            case false => "\\textcolor{gray}{"
+          }
+          val postcolor = mostRecent(course).equals(semester) match {
+            case true => ""
+            case false => "}"
+          }
+
           totalUnits = totalUnits + course.units
           doc ++= " \\raggedright "
+          doc ++= precolor
           course.formatSatisfier(doc)
+          doc ++= postcolor
           doc ++= " & \\raggedright "
+          doc ++= precolor
           doc ++=* furtherShorten(course.shortName)
+          doc ++= postcolor
           doc ++= " & "
+          doc ++= precolor
           doc ++= course.units.toString()
+          doc ++= postcolor
           doc ++= " & "
+          doc ++= precolor
           doc ++= grade.toString()
+          doc ++= postcolor
           doc ++= " \\\\\n"
         }
         doc ++= s"\\hline\\multicolumn{3}{r@{~~}}{Total semester units: $totalUnits}\\end{tabular}\n\\\\[2pt]\n"

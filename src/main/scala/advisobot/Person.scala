@@ -43,8 +43,7 @@ class Person(val id:String, val firstNames:String, val lastName:String,
   }
 
   def completions: SortedMap[Course,Grade] = {
-    val builder: Builder[(Course,Grade), SortedMap[Course,Grade]] =
-      SortedMap.newBuilder[Course,Grade]
+    val builder = SortedMap.newBuilder[Course,Grade]
 
     for ((term, results) <- past; (course, grade) <- results) {
       builder += ((course, grade))
@@ -64,6 +63,24 @@ class Person(val id:String, val firstNames:String, val lastName:String,
       total = total + course.units
     }
     total
+  }
+
+  /**
+   * Returns a map from each course taken by this person, to the
+   * term when they most recently took that course.
+   */
+  def mostRecentlyTaken(now: Term): SortedMap[Course,Term] = {
+    val builder = SortedMap.newBuilder[Course,Term]
+
+    for ((term, results) <- past; (course, grade) <- results) {
+      builder += ((course, term))
+    }
+
+    for(course <- current) {
+      builder += ((course, now))
+    }
+
+    builder.result()
   }
 
   /**
