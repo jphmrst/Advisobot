@@ -18,19 +18,26 @@ extends LaTeXRenderable {
     val selectionFormatter = SelectionFormatter.currentFormatter
     val colorName = selectionFormatter.colorName
     val formatter = selectionFormatter.formatter
+    val alerting = ScheduleSuggestion.resetAlert
 
-    doc ++= """      \\ \hline \multicolumn{1}{|c|}{\textcolor{"""
+    doc ++= """      \\ \hline\multicolumn{1}{|c|}{"""
+    if (alerting) { doc ++= "\\cellcolor{red!25}" }
+    doc ++= """\textcolor{"""
     doc ++= colorName
     doc ++= "}{"
     doc ++= formatter
     units.toLaTeX(doc)
-    doc ++= """}} & \multicolumn{1}{c|}{\textcolor{"""
+    doc ++= """}} & \multicolumn{1}{c|}{"""
+    if (alerting) { doc ++= "\\cellcolor{red!25}" }
+    doc ++= """\textcolor{"""
     doc ++= colorName
     doc ++= "}{"
     doc ++= formatter
     description.toLaTeX(doc)
     doc ++= "}}\n"
   }
+  override def toString(): String =
+    "Suggestion<" + units.toString() + ": " + description.toString()
 }
 
 object ScheduleSuggestion {
@@ -38,4 +45,12 @@ object ScheduleSuggestion {
     new ScheduleSuggestion(new SpecificClass(cl), cl.units)
   def toTake(description: CourseSelection, units: UnitsRange) =
     new ScheduleSuggestion(description, units)
+
+  private var alertNext: Boolean = false
+  def setAlertNext: Unit = { alertNext = true }
+  def resetAlert: Boolean = {
+    val result = alertNext
+    alertNext = false
+    result
+  }
 }

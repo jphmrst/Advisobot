@@ -54,6 +54,7 @@ extends PersonReport {
     doc.addPackage("hyperref")
     doc.addPackage("array")
     doc.addPackage("fancyhdr")
+    doc.addPackage("xcolor","table")
     doc.addPackage("makecell,tikz,latexsym,pifont,pdflscape,multicol,paralist")
     doc.addPackage("geometry","left=0.5in,right=0.5in,top=0.75in,bottom=0.75in")
     doc.addPreamble("\\usetikzlibrary{matrix,arrows.meta,calc}")
@@ -392,6 +393,8 @@ extends PersonReport {
 
         var totalUnits = UnitsRange.exactly(0)
         for (item <- plan) {
+          val hasPrereq = item.description.hasPrerequisiteIn(plan)
+          if (hasPrereq) { ScheduleSuggestion.setAlertNext }
           item.toLaTeX(doc)
           doc ++= "\n"
           totalUnits = totalUnits and item.units

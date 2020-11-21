@@ -11,6 +11,17 @@ import Trace._
 
 trait CourseSelection extends LaTeXRenderable {
   def plainText: String
+
+  def hasPrerequisiteIn(sels : List[ScheduleSuggestion]): Boolean = {
+    for (sel <- sels) {
+      if (hasPrerequisite(sel.description)) {
+        return true
+      }
+    }
+    return false
+  }
+  def hasPrerequisite(cs : CourseSelection): Boolean
+  def isPrerequisiteOf(c : Course): Boolean
 }
 object CourseSelection {
   implicit def fromCourse(cl: Course): CourseSelection = new SpecificClass(cl)
@@ -21,6 +32,12 @@ object CourseSelection {
 class SpecificClass(val cl: Course) extends CourseSelection {
   override def toLaTeX(doc:LaTeXdoc): Unit = cl.toLaTeX(doc)
   override def plainText: String = cl.tag()
+  override def hasPrerequisite(cs : CourseSelection): Boolean =
+    cs.isPrerequisiteOf(cl)
+  override def isPrerequisiteOf(later : Course): Boolean = {
+    later.prerequisites.exists(_.isCourse(cl))
+  }
+  override def toString(): String = "Specific[" + cl.toString() + "]"
 }
 
 class DescribedClasses(val desc: String) extends CourseSelection {
@@ -30,6 +47,8 @@ class DescribedClasses(val desc: String) extends CourseSelection {
     doc ++= "\\end{tabular}"
   }
   override def plainText: String = desc.replace("\\\\"," ")
+  override def hasPrerequisite(cs : CourseSelection): Boolean = false
+  override def isPrerequisiteOf(c : Course): Boolean = false
 }
 
 class PickOneSelection(val selections: Seq[CourseSelection])
@@ -56,6 +75,8 @@ extends CourseSelection {
 
     sb.toString()
   }
+  override def hasPrerequisite(cs : CourseSelection): Boolean = false
+  override def isPrerequisiteOf(c : Course): Boolean = false
 }
 
 object PickOne {

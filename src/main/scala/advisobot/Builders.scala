@@ -226,6 +226,7 @@ object AtLevel {
 case class WithConditions(val name: String, val req: Requirement,
                           val checks: List[SideCondition] = List())
 extends Requirement {
+  override def isCourse(c: Course): Boolean = false
   override def addSatisfiers(
     implicit who: Person,
     satisfiers: HashMap[Requirement,List[Achievement]],
@@ -273,8 +274,10 @@ object AllWithConditions {
 
 case class AllSatisfying(val name: String, val req: Requirement)
 extends Requirement {
+  override def isCourse(c: Course): Boolean = false
   override def
-      addSatisfiers(implicit who: Person, satisfiers:HashMap[Requirement,List[Achievement]],
+      addSatisfiers(implicit who: Person,
+                    satisfiers:HashMap[Requirement,List[Achievement]],
                     checkset:HashSet[Course]): Option[List[Achievement]] = {
     val buffer = new ListBuffer[Achievement]
     for (possibleSatisfier <- checkset) {

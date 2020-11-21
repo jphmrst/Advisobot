@@ -64,6 +64,7 @@ trait Requirement extends UniqueHashCode {
   def name: String
   def count: Int
   def formatUnsatisfied(doc:LaTeXdoc): Unit
+  def isCourse(c: Course): Boolean
 
   protected def succeeding(
     achievements: List[Achievement],
@@ -110,6 +111,7 @@ extends Requirement {
 
   override def count: Int = 1
   override def formatUnsatisfied(doc:LaTeXdoc): Unit = { doc ++= name }
+  def isCourse(c: Course): Boolean = pred(c)
 }
 
 object CoursePredicate {
@@ -117,9 +119,10 @@ object CoursePredicate {
     new CoursePredicate(name, pred)
 }
 
-case class Require(val course:Course) extends Requirement {
-  override def addSatisfiers(implicit who: Person, satisfiers:HashMap[Requirement,List[Achievement]],
-                             checkset:HashSet[Course]): Option[List[Achievement]] = {
+case class Require(val course: Course) extends Requirement {
+  override def addSatisfiers(implicit who: Person,
+                             satisfiers: HashMap[Requirement,List[Achievement]],
+                             checkset: HashSet[Course]): Option[List[Achievement]] = {
     if (checkset.contains(course)) {
       checkset -= course
       val steps = List[Achievement](course)
@@ -134,12 +137,17 @@ case class Require(val course:Course) extends Requirement {
   }
   override val count: Int = 1
   override def name: String = course.tag()
+  def isCourse(c: Course): Boolean = {
+    c.prefix.equals(course.prefix) && c.number.equals(course.number)
+  }
 }
 
 case class Select(val shortName:String, val longName:String,
                   val count:Int, val subrequirements:List[Requirement])
 extends Requirement {
   override def name: String = shortName
+  override def isCourse(c: Course): Boolean =
+    subrequirements.exists(_.isCourse(c))
   override def addSatisfiers(
     implicit who: Person, satisfiers:HashMap[Requirement,List[Achievement]],
     checkset:HashSet[Course]
@@ -191,6 +199,7 @@ case class Complete(val task:Task) extends Requirement {
   override def name: String = task.toString()
   override def formatUnsatisfied(doc:LaTeXdoc):Unit = { doc ++= task.tag() }
   override val count: Int = 1
+  override def isCourse(c: Course): Boolean = false
 }
 
 object Select {

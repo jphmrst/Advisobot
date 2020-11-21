@@ -81,6 +81,20 @@ extends Loading {
       }
     }
   }
+
+  override def toString(): String = {
+    val suffix = (upperBound.isDefined && lowerBound < upperBound.get) match {
+      case true => {
+        upperBound match {
+          case Some(x) => ("--" + x.toString())
+          case None => "--"
+        }
+      }
+      case false => ""
+    }
+
+    lowerBound.toString() + suffix
+  }
 }
 
 object UnitsRange {
