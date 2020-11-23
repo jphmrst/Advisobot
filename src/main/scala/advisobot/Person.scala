@@ -15,7 +15,8 @@ class Person(val id:String, val firstNames:String, val lastName:String,
              val active:Boolean, val otherUnits:Int,
              val recommend: SortedMap[Term, List[ScheduleSuggestion]],
              val notes: SortedMap[Term, Outline[String]] = SortedMap(),
-             val notesWidth: String = "5.25in") {
+             val notesWidth: String = "5.25in",
+             val shrinkNotes: Int = 0) {
   implicit val me: Person = this
 
   def this(id: String, firstNames: String, lastName: String, email: String,
@@ -161,7 +162,9 @@ object Person {
     past: SortedMap[Term,SortedMap[Course,Grade]],
     recommend: SortedMap[Term, List[ScheduleSuggestion]],
     active: Boolean=true, otherUnits: Int=0,
-    notes: SortedMap[Term, Outline[String]] = SortedMap()
+    notes: SortedMap[Term, Outline[String]] = SortedMap(),
+    shrinkNotes: Int = 0
   ) = new Person(id, firstNames, lastName, email, programs,
-                 current, past, active, otherUnits, recommend, notes)
+                 current, past, active, otherUnits, recommend, notes,
+                 shrinkNotes = shrinkNotes)
 }

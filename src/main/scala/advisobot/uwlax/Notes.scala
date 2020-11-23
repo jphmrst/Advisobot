@@ -6,7 +6,7 @@ object Notes {
   import org.maraist.outlines.OutlineItem.{summarized,item}
 
   /** Short message about checking for errors. */
-  val CHECK_INFO_SHORT = "Please check the information on this form to make sure that it is correct.  If you find any errors, please let me know so that I can correct it."
+  val CHECK_INFO_SHORT = "Please double-check the information on this form against WINGS to make sure that it is correct.  If you find any errors, please let me know so that I can correct it."
 
   /** Long message about checking for errors, with sublist of particulars. */
   val CHECK_INFO = item(CHECK_INFO_SHORT + "  Please check in particular:",
@@ -71,8 +71,14 @@ object Notes {
 
   /** Think about a minor. */
   val CONSIDER_MINOR = item(
-    "The College of Science and Health requires all students with no minor or second major to take eighteen units from outside of CS.  You should start taking some of those courses now.  Twelve of the eighteen units must be upper-level, so you may need some time to satisfy their prerequisites.",
-    "Alternatively, you might think about a minor that would interest you.  The 18-unit requirement goes away when you have declared a minor or second major with the Dean's office.")
+    "The College of Science and Health requires all students with no minor or second major to take eighteen units outside of Computer Science.  You should start taking some of those courses now.  Twelve of the eighteen units must be upper-level, so you may need some time to satisfy their prerequisites.",
+    "Alternatively, you might think about a minor that would interest you, and which would not require too many additional courses.  The 18-unit requirement goes away when you have declared a minor or second major with the Dean's office.")
+
+  /** Think about a minor, with caveats for a compressed schedule in which there is little time for prerequisites for required upper-level electives. */
+  val CONSIDER_MINOR_SHORT_TIME_FOR_UPPERS = item(
+    "The College of Science and Health requires all students with no minor or second major to take eighteen units outside of Computer Science.",
+    "Twelve of these eighteen units must be at the 300/400-level.  It will take some thought to find good candidates for these courses which do not require too many additional classes for below-300 level prerequisites.",
+    "Alternatively, you might think about a minor that would interest you, and which would not require too many additional courses.  The 18-unit requirement goes away when you have declared a minor or second major with the Dean's office.")
 
   /** Think about a math minor, since you've already taken MTH309. */
   val CONSIDER_MATH_MINOR_309 = item(

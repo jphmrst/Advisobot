@@ -2,7 +2,7 @@ package advisobot.core
 import scala.language.implicitConversions
 import scala.collection.{Map,SortedMap} // {Iterable,Map,Set,Seq}
 import scala.collection.mutable.{HashSet,HashMap,ListBuffer}
-import java.nio.file.{Paths, Files}
+import java.nio.file.{Path, Paths, Files, FileSystems}
 import org.maraist.latex.{LaTeXdoc,LaTeXRenderable}
 import org.maraist.util.UniqueHashCode
 import org.maraist.outlines.{Outline}
@@ -32,7 +32,7 @@ extends PersonReport {
     var nowOrForward = SortedMap[Term, List[ScheduleSuggestion]]()
     for ((semester, plan) <- who.recommend) {
       if (lastPast < semester) {
-        nowOrForward = nowOrForward + (semester -> plan)
+        nowOrForward = nowOrForward + ((semester -> plan))
       }
     }
 
@@ -139,27 +139,33 @@ extends PersonReport {
 """
     }
 
-    var photoFile = advisees.photoDirectory + "/" + who.id + ".jpg"
-    if (!(new java.io.File(photoFile).exists)) {
-      photoFile = advisees.photoDirectory + "/" + who.id + ".jpeg"
-    }
-    if (!(new java.io.File(photoFile).exists)) {
-      photoFile = advisees.photoDirectory + "/" + who.id + ".png"
-    }
-    if ( new java.io.File(photoFile).exists) {
-      // println("Using ", photoFile)
-      doc ++= "  \\\\ \\multicolumn{2}{|c|}{{\\includegraphics{"
-      advisees.reportToPhotoDirPath match {
-        case None => { }
-        case Some(p) => {
-          doc ++= p
-          doc ++= "/"
-        }
+    val photosDir: Path =
+      FileSystems.getDefault().getPath(advisees.photoDirectory);
+    if (Files.isDirectory(photosDir)) {
+      var photoFile = advisees.photoDirectory + "/" + who.id + ".jpg"
+      if (!(new java.io.File(photoFile).exists)) {
+        photoFile = advisees.photoDirectory + "/" + who.id + ".jpeg"
       }
-      doc ++= photoFile
-      doc ++= "}}}\n"
+      if (!(new java.io.File(photoFile).exists)) {
+        photoFile = advisees.photoDirectory + "/" + who.id + ".png"
+      }
+      if ( new java.io.File(photoFile).exists) {
+        // println("Using ", photoFile)
+        doc ++= "  \\\\ \\multicolumn{2}{|c|}{{\\includegraphics{"
+        advisees.reportToPhotoDirPath match {
+          case None => { }
+          case Some(p) => {
+              doc ++= p
+            doc ++= "/"
+          }
+        }
+        doc ++= photoFile
+        doc ++= "}}}\n"
+      } else {
+        // println("No photo file ", photoFile)
+      }
     } else {
-      // println("No photo file ", photoFile)
+      DefaultPersonReport.warnNoImageDirectory(advisees.photoDirectory)
     }
     // doc ++= "\\vspace*{-15mm}\n";
 
@@ -249,7 +255,37 @@ extends PersonReport {
       doc ++= SelectionFormatter.handwrittenFormatter.formatter
 
       who.notes.get(forTerm) match {
-        case Some(n) => n.toLaTeX(doc)
+        case Some(n) => {
+          val thisShrinkNotes: Int = {
+            var res: Int = 0
+            if (advisees.shrinkNotes < 0) {
+              res = 0
+            } else if (advisees.shrinkNotes == 0) {
+              res = who.shrinkNotes
+            } else if (who.shrinkNotes < 0) {
+              res = 0
+            } else if (who.shrinkNotes > advisees.shrinkNotes) {
+              res = who.shrinkNotes
+            } else {
+              res = advisees.shrinkNotes
+            }
+            res
+          }
+
+          if (thisShrinkNotes > 4) {
+            doc ++= "\\fontsize{9}{10}\\selectfont "
+          } else if (thisShrinkNotes > 3) {
+            doc ++= "\\fontsize{9.5}{11}\\selectfont "
+          } else if (thisShrinkNotes > 2) {
+            doc ++= "\\fontsize{10}{11}\\selectfont "
+          } else if (thisShrinkNotes > 1) {
+            doc ++= "\\fontsize{11}{12}\\selectfont "
+          } else if (thisShrinkNotes > 0) {
+            doc ++= "\\fontsize{12}{13}\\selectfont "
+          }
+
+          n.toLaTeX(doc)
+        }
         case None => { }
       }
 
@@ -320,7 +356,7 @@ extends PersonReport {
           doc ++= postcolor
           doc ++= " \\\\\n"
         }
-        doc ++= s"\\hline\\multicolumn{3}{r@{~~}}{Total semester units: $totalUnits}\\end{tabular}\n\\\\[2pt]\n"
+        doc ++= s"\\hline\\multicolumn{3}{r@{~~}}{Total registered units: $totalUnits}\\end{tabular}\n\\\\[2pt]\n"
       }
 
       if (who.current.size > 0) {
@@ -526,4 +562,15 @@ extends PersonReport {
      .replace("Philosophy of the ", "Phil. ")
      .replace("Sw. Design IV: ", "")
      .replace("Sw.Eng.", "Software Engineering")
+}
+
+object DefaultPersonReport {
+  var warnedNoImageDirectory = false
+
+  def warnNoImageDirectory(dir: String): Unit = {
+    if (!warnedNoImageDirectory) {
+      println("Warning: no image directory " + dir)
+      warnedNoImageDirectory = true
+    }
+  }
 }

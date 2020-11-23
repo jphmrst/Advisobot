@@ -17,6 +17,7 @@ abstract class Advisees(people:Person*) {
   val institutionShortName: String
   val registrarName: String
   val recordsSystemName: String
+  val shrinkNotes: Int
   implicit val verbosity: Int = 1
 
   var photoDirectory: String = "img"
