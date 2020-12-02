@@ -319,3 +319,9 @@ class VariableUnits(val prefix: String, val number: Int,
                       shortName, longName, prerequisites)
   }
 }
+
+object Functions {
+
+  def inList(courses: Course*): (Course) => Boolean =
+    (course: Course) => courses.contains(course)
+}

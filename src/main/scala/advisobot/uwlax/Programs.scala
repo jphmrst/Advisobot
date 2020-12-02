@@ -6,6 +6,7 @@ import advisobot.core.{Program,Requirement,Select,Person,Grade,Term,
                        Achievement,SideCondition,Viewer,CoursePredicate,
                        ScheduleSuggestion, UnitsRange}
 import advisobot.builder._
+import advisobot.builder.Functions._
 import uwlcs.advisobot._
 import uwlcs.advisobot.courses._
 
@@ -436,6 +437,93 @@ extends Program("Creative writing minor", "Creative writing minor",
          ConditionsViewer(req=4, columns=3))
 }
 
+/** Requirements for a minor in Spanish (as of 2020) */
+object SpanishMinor2020
+extends Program(
+  "Spanish min.", "Spanish minor",
+  OneOf(SPA202, SPA221),
+  Select("Communities/writing proficiency", 2,
+         List(SPA307, SPA309, SPA323, SPA333, SPA335)),
+  Select("Communities/oral proficiency", 2, List(SPA302, SPA310, SPA324)),
+  WithConditions("Identities and perspectives/human conditions",
+                 AllSatisfying("Identities and perspectives",
+                               Select("Identities and perspectives", 1,
+                                      List(SPA352, SPA353, SPA354, SPA355,
+                                           SPA369, SPA370, SPA380, SPA381,
+                                           SPA382, SPA403, SPA443,
+                                           CourseOfUnits("SPA", 450, 3)))),
+                 List(
+                   UnitsCondition("Identities and perspectives", 6,
+                                  inList(SPA352, SPA353, SPA354, SPA355,
+                                         SPA369, SPA370, SPA380, SPA381,
+                                         SPA382)),
+                   UnitsCondition("total", 9)
+                 ))
+) {
+  override def viewers: List[Viewer] =
+    List(
+      new SimpleViewer("Spanish minor core", 5, 0, 1, 2),
+      ConditionsViewer(req=3, columns=5))
+}
+
+/** Requirements for a minor in Spanish (as of 2019) */
+object SpanishMinor2019
+extends Program(
+  "Spanish min.", "Spanish minor",
+  SPA202,
+  Select("Writing", 2, List(SPA307, SPA323, SPA333)),
+  Select("Oral", 2, List(SPA302, SPA310, SPA324)),
+  WithConditions("Identities and perspectives",
+                 AllSatisfying(
+                   "Identities and perspectives",
+                    Select("Elective", "Electives", 1,
+                           List(SPA352, SPA353, SPA354, SPA355, SPA369,
+                           SPA370, SPA380, SPA381, SPA382))),
+                 List(
+                   UnitsCondition("total", 9)
+                 )),
+  Select("Human conditions", 1,
+         List(SPA403, SPA443, CourseOfUnits("SPA", 450, 3)))
+) {
+  override def viewers: List[Viewer] =
+    List(
+      new SimpleViewer("Spanish minor core", 4, 0, 1, 2, 4),
+      ConditionsViewer(req=3, columns=4))
+}
+
+/** Requirements for a minor in Spanish (as of 2018) */
+object SpanishMinor2018
+extends Program(
+  "Spanish min.", "Spanish minor",
+  SPA300, OneOf(SPA320, SPA321), SPA326, SPA330,
+  Select("SPA327/8/9", 1, List(SPA327, SPA328, SPA329)),
+  WithConditions("Spanish minor 300/400-level electives",
+                 AllSatisfying("300/400",
+                               AtLevel("300/400",
+                                       "SPA", (x:Int) => x>=300 && x<500)),
+                 List(
+                   UnitsCondition("total", 6)
+                 ))
+) {
+  override def viewers: List[Viewer] =
+    List(
+      new SimpleViewer("Spanish minor core", 5, 0, 1, 2, 3, 4),
+      ConditionsViewer(req=5, columns=3))
+}
+
+/** Requirements for a minor in Spanish pre-2018, from WINGS for that
+ *  one student
+ */
+object SpanishMinorOlder
+extends Program(
+  "Spanish min.", "Spanish minor",
+  SPA326, SPA330, SPA300, SPA321, SPA382, SPA331
+) {
+  override def viewers: List[Viewer] =
+    List(
+      new SimpleViewer("Spanish minor core", 3, 0, 1, 2, 3, 4, 5))
+}
+
 /** Requirements for a minor in German (as of 2018) */
 object GermanMinor2018
 extends Program(
@@ -480,39 +568,6 @@ extends Program(
          ConditionsViewer(req=4, columns=5))
 }
 
-/** Requirements for a minor in Spanish (as of 2018) */
-object SpanishMinor2018
-extends Program(
-  "Spanish min.", "Spanish minor",
-  SPA300, OneOf(SPA320, SPA321), SPA326, SPA330,
-  Select("SPA327/8/9", 1, List(SPA327, SPA328, SPA329)),
-  WithConditions("Spanish minor 300/400-level electives",
-                 AllSatisfying("300/400",
-                               AtLevel("300/400",
-                                       "SPA", (x:Int) => x>=300 && x<500)),
-                 List(
-                   UnitsCondition("total", 6)
-                 ))
-) {
-  override def viewers: List[Viewer] =
-    List(
-      new SimpleViewer("Spanish minor core", 5, 0, 1, 2, 3, 4),
-      ConditionsViewer(req=5, columns=3))
-}
-
-/** Requirements for a minor in Spanish pre-2018, from WINGS for that
- *  one student
- */
-object SpanishMinorOlder
-extends Program(
-  "Spanish min.", "Spanish minor",
-  SPA326, SPA330, SPA300, SPA321, SPA382, SPA331
-) {
-  override def viewers: List[Viewer] =
-    List(
-      new SimpleViewer("Spanish minor core", 3, 0, 1, 2, 3, 4, 5))
-}
-
 object Philosophy2ndMajor2020
 extends Program(
   "Phil. 2nd maj.", "Philosophy second major",
@@ -542,31 +597,6 @@ extends Program(
       ConditionsViewer(req=7, columns=6))
 }
 
-
-/** Requirements for a minor in Spanish (as of 2019) */
-object SpanishMinor2019
-extends Program(
-  "Spanish min.", "Spanish minor",
-  SPA202,
-  Select("Writing", 2, List(SPA307, SPA323, SPA333)),
-  Select("Oral", 2, List(SPA302, SPA310, SPA324)),
-  WithConditions("Identities and perspectives",
-                 AllSatisfying(
-                   "Identities and perspectives",
-                    Select("Elective", "Electives", 1,
-                           List(SPA352, SPA353, SPA354, SPA355, SPA369,
-                           SPA370, SPA380, SPA381, SPA382))),
-                 List(
-                   UnitsCondition("total", 9)
-                 )),
-  Select("Human conditions", 1,
-         List(SPA403, SPA443, CourseOfUnits("SPA", 450, 3)))
-) {
-  override def viewers: List[Viewer] =
-    List(
-      new SimpleViewer("Spanish minor core", 4, 0, 1, 2, 4),
-      ConditionsViewer(req=3, columns=4))
-}
 
 /** Requirements for a minor in Chinese Studies (as of 2019) */
 object ChineseStudiesMinor2019

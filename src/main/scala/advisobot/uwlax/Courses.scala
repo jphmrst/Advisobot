@@ -2963,15 +2963,19 @@ object SPA102 extends Course(4, "SPA", 102, "Elementary Spanish II", "Elementary
 object SPA103 extends Course(4, "SPA", 103, "Elementary Spanish I & II", "Elementary Spanish I and II")
 object SPA201 extends Course(4, "SPA", 201, "Intermediate Spanish I", "Intermediate Spanish I")
 object SPA202 extends Course(4, "SPA", 202, "Interm Spanish II", "Intermediate Spanish II")
+object SPA221 extends Course(4, "SPA", 221, "Intro Span for Health Prof", "Introduction to Spanish for the Health Professions")
 object SPA300 extends Course(4, "SPA", 300, "Oral Prof Thru Grammar Review", "Oral Proficiency Through Grammar Review")
 object SPA302 extends Course(4, "SPA", 302, "Faces of Spain",
                              "Faces of Spain: Conversation and Culture")
 object SPA303 extends Course(4, "SPA", 303, "Intgrtd Skls Dev I", "Integrated Skills Development I")
 object SPA304 extends Course(4, "SPA", 304, "Intgtd Skls Dev II", "Integrated Skills Development II")
 object SPA305 extends Course(3, "SPA", 305, "Intro to Hispanic Lit", "Introduction to Hispanic Literature")
-object SPA306 extends Course(3, "SPA", 306, "Spanish for Health Profess", "Spanish for the Health Professions")
+object SPA306 extends Course(3, "SPA", 306, "Spanish for Health Profess", "Spanish for the Health Professions", SPA201)
 object SPA307 extends Course(3, "SPA", 307, "Diverse Stories", "Diverse Stories: Reading for Social Responsibility")
 object SPA308 extends Course(3, "SPA", 308, "Culture/Civ of Spa Spkng World", "Cultures and Civilizations of the Spanish Speaking World")
+object SPA309 extends Course(3, "SPA", 309, "Spanish Culture Through Art",
+                             "Spanish Culture Through Art",
+                             OneOf(SPA202, SPA221))
 object SPA310 extends Course(3, "SPA", 310, "Exploring Communities",
                              "Exploring Communities: Understanding Culture")
 object SPA315 extends Course(3, "SPA", 315, "Business Spanish", "Business Spanish")
@@ -2987,6 +2991,10 @@ object SPA329 extends Course(1, "SPA", 329, "News in Spanish", "Reporting and Pu
 object SPA330 extends Course(3, "SPA", 330, "Advanced Grammar & Syntax", "Advanced Grammar and Syntax")
 object SPA331 extends Course(3, "SPA", 331, "Spanish Phonetics", "Spanish Phonetics")
 object SPA333 extends Course(3, "SPA", 333, "Work and Play in Diverse Communities", "Work and Play in Diverse Communities")
+object SPA335 extends Course(3, "SPA", 335,
+                             "Writing to Effect Change",
+                             "Writing to Effect Change: Global and Responsible Citizenship",
+                             OneOf(SPA202, SPA221))
 object SPA351 extends Course(4, "SPA", 351, "Films in Spanish", "Films in Spanish")
 object SPA352 extends Course(4, "SPA", 352, "Voices of Revolution",
                              "Voices of Revolution")
