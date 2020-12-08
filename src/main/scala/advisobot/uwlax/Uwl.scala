@@ -107,6 +107,10 @@ object Winter24 extends Semester(Winter, 2024, 2246)
 object Spring24 extends Semester(Spring, 2024, 2247)
 object Summer24 extends Semester(Summer, 2024, 2250)
 object Fall24 extends Semester(Fall, 2024, 2254)
+object Winter25 extends Semester(Winter, 2025, 2256)
+object Spring25 extends Semester(Spring, 2025, 2257)
+object Summer25 extends Semester(Summer, 2025, 2260)
+object Fall25 extends Semester(Fall, 2025, 2264)
 
 object Suggestions {
   val ELECTIVE = new ScheduleSuggestion("Elective", 3)
@@ -138,6 +142,9 @@ object Suggestions {
   val MINOR_ELECT = new ScheduleSuggestion("Elect. for minor", 3)
   val HIST_ELECT = new ScheduleSuggestion("History elective", 3)
   val HIST_SURVEY = new ScheduleSuggestion("History survey", 3)
+  val SPAN_WRITTEN = new ScheduleSuggestion("Span. writing prfcy.", 3)
+  val SPAN_ORAL = new ScheduleSuggestion("Span. oral prfcy.", 3)
+  val SPAN_ELECTIVE = new ScheduleSuggestion("Spanish elective", 3)
   val NON_CS_3unitsplus =
     new ScheduleSuggestion("Non-CS", UnitsRange.atLeast(3))
   val UPPER_NON_CS_3unitsplus =

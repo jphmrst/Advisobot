@@ -118,16 +118,29 @@ extends TabularViewer {
 
     for (req <- requirements) {
       doc ++= "\n        "
-      if ((item % columns) == 0) {
+
+      // A somewhat crude way to truncate lines early when the
+      // next requirement needs more columns than we have left
+      if (item > 0 && req.count > 1 && item + req.count >= columns) {
+        for (i <- 0 until (columns - item)) {
+        doc ++= " &&"
+        }
+        item = 0
         doc ++= "\\\\ "
+
       } else {
-        doc ++= "& "
+        if ((item % columns) == 0) {
+          doc ++= "\\\\ "
+        } else {
+          doc ++= "& "
+        }
+        if (item == 0) {
+          doc ++= "\\hline "
+        }
       }
-      if (item == 0) {
-        doc ++= "\\hline "
-      }
+
       req.formatSatisfaction
-      item = item + 1
+      item = item + req.count
     }
 
     if ((item % columns) > 0) {

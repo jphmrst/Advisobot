@@ -442,10 +442,11 @@ object SpanishMinor2020
 extends Program(
   "Spanish min.", "Spanish minor",
   OneOf(SPA202, SPA221),
-  Select("Communities/writing proficiency", 2,
+  Select("Writing", "Communities/writing proficiency", 2,
          List(SPA307, SPA309, SPA323, SPA333, SPA335)),
-  Select("Communities/oral proficiency", 2, List(SPA302, SPA310, SPA324)),
-  WithConditions("Identities and perspectives/human conditions",
+  Select("Oral", "Communities/oral proficiency", 2,
+         List(SPA302, SPA310, SPA324)),
+  WithConditions("Spanish: Identities and perspectives/human conditions",
                  AllSatisfying("Identities and perspectives",
                                Select("Identities and perspectives", 1,
                                       List(SPA352, SPA353, SPA354, SPA355,
@@ -453,7 +454,7 @@ extends Program(
                                            SPA382, SPA403, SPA443,
                                            CourseOfUnits("SPA", 450, 3)))),
                  List(
-                   UnitsCondition("Identities and perspectives", 6,
+                   UnitsCondition("from Identities and Perspectives group", 6,
                                   inList(SPA352, SPA353, SPA354, SPA355,
                                          SPA369, SPA370, SPA380, SPA381,
                                          SPA382)),
@@ -462,7 +463,8 @@ extends Program(
 ) {
   override def viewers: List[Viewer] =
     List(
-      new SimpleViewer("Spanish minor core", 5, 0, 1, 2),
+      new SimpleViewer("Spanish: Experiences in cultural context", 1, 0),
+      new SimpleViewer("Spanish: Diversity and social responsibility", 2, 1, 2),
       ConditionsViewer(req=3, columns=5))
 }
 
