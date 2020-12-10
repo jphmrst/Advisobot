@@ -35,7 +35,7 @@ object CSmajor2018 extends Program(
                  )
                )
 ) {
-
+  // val sequence: Seq[Requirements] =
   override def viewers: List[Viewer] =
     List(
       new SimpleViewer("CS major and emphasis core requirements", 4,
