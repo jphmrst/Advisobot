@@ -2,45 +2,51 @@ Advisobot generates human-readable, compact reports about a student's
 progress through their university requirements, including majors,
 minors, and various other requirements.
 
- - Package [[advisobot.core]] contains central artifacts, notably
+ - Package [[advisobot.core]] contains central, program-independent
+   artifacts:
 
-   - Class [[advisobot.core.Program Program]] details a component
-     of a course of study: a major, minor, or set of other
-     requirements.
+    - Class [[advisobot.core.Program Program]] details a component
+      of a course of study: a major, minor, or set of other
+      requirements.
    
-   - Class [[advisobot.core.Course Course]] models one class.
+    - Class [[advisobot.core.Course Course]] models one class.
    
-   - Trait [[advisobot.core.Requirement Requirement]] is used to
-     describe the elements of a [[advisobot.core.Program Program]].
+    - Trait [[advisobot.core.Requirement Requirement]] is used to
+      describe the elements of a [[advisobot.core.Program Program]].
    
-   - Class [[advisobot.core.ScheduleSuggestion ScheduleSuggestion]] is
-     the general type of object which can be included in future
-     semester plans.  It contains two elements:
+    - Class [[advisobot.core.ScheduleSuggestion ScheduleSuggestion]] is
+      the general type of object which can be included in future
+      semester plans.  It contains two elements:
 
-      1. A
-         [[advisobot.core.CourseSelection][description of the suggestion]],
-	 which, like a [[advisobot.core.Requirement Requirement]],
-	 can take one of several forms:
+       1. A
+          [[advisobot.core.CourseSelection description of the suggestion]],
+ 	  which, like a [[advisobot.core.Requirement Requirement]],
+ 	  can take one of several forms:
+	  
+     	   - Class [[advisobot.builder.AllSatisfying AllSatisfying]]
 
-	  - Class [[advisobot.core.AllSatisfying AllSatisfying]]
-	    
+  	   - [[advisobot.builder.WithConditions WithConditions]]
+	   
+  	   - [[advisobot.core.Complete Complete]]
+	   
+ 	   - [[advisobot.core.CoursePredicate CoursePredicate]]
+	   
+ 	   - [[advisobot.core.Require Require]]
+	   
+ 	   - [[advisobot.core.Select Select]]
+	   
+       1. A range of units.
 
-	  - [[advisobot.core.WithConditions WithConditions]]
-
-	  - [[advisobot.core.Complete Complete]]
-
-	  - [[advisobot.core.CoursePredicate CoursePredicate]]
-
-	  - [[advisobot.core.Require Require]]
-
-	  - [[advisobot.core.Select Select]]
-
-      2. A range of units.
-
-   - Abstract class [[advisobot.core.Advisees Advisees]] should be
-     extended as a {@code Main} class by each advisor, and populated
-     with their advisees' information.
+    - Abstract class [[advisobot.core.Advisees Advisees]] should be
+      extended as a {@code Main} class by each advisor, and populated
+      with their advisees' information.
    
+ - Package [[advisobot.builder]] contains helper classes, companion
+   objects, and methods for modeling programs and people.  Some are
+   linked above, and this package also includes:
+   
+    - FILL IN
+
  - Classes in package [[uwlcs.advisobot]] model general aspects of
    UWL's catalog, including grades and semester names.
    
