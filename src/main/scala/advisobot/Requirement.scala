@@ -25,7 +25,7 @@ trait Requirement extends UniqueHashCode {
    * @param checkset The courses not yet used to satisfy a requirement
    *
    * @return The list of {@link advisobot.core.Achievement Achievement}s
-   * which satisfy this requirement, wrapped as an {@link scala.Option}
+   * which satisfy this requirement, wrapped as an [[scala.Option]].
    */
   def addSatisfiers(
     implicit who: Person, satisfiers:HashMap[Requirement,List[Achievement]],
