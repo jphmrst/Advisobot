@@ -105,12 +105,14 @@ object Cohort extends Advisees(
          notes = SortedMap( Fall20 -> Outline(CHECK_INFO, REQUIRE_TELECON) )
        )
 ) {
+  override val runOnly: Option[Int] = None
   override val verbosity: Int = 2
   override val forTerm: Term = Fall20
   override val lastPast: Term = Spring20
   override val institutionShortName: String = "UWL"
   override val registrarName: String = "Records \\& Registration"
   override val recordsSystemName: String = "WINGS"
+  override val shrinkNotes: Int = 0
   reportDirectory = "reports"
   reportToPhotoDirPath = Some(".")
   photoDirectory = "../img"
