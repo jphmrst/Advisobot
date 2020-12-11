@@ -3,6 +3,7 @@ package advisobot.core
 import scala.language.implicitConversions
 import scala.collection.{Map,SortedMap} // {Iterable,Map,Set,Seq}
 import scala.collection.mutable.{Builder,HashSet,HashMap,ListBuffer}
+import java.io.File
 import java.nio.file.{Paths, Files}
 import org.maraist.latex.{LaTeXdoc,LaTeXRenderable}
 import org.maraist.util.UniqueHashCode
@@ -20,9 +21,15 @@ abstract class Advisees(people:Person*) {
   val shrinkNotes: Int
   implicit val verbosity: Int = 1
 
-  var photoDirectory: String = "img"
   var reportDirectory: String = "."
   var reportToPhotoDirPath: Option[String] = None
+
+  /**
+   * The photo directory must be either (1) an absolute path, and
+   * (2) a relative path from the directory where the LaTeX output
+   * is written, to the directory holding images.
+   */
+  var photoDirectory: String = "img"
 
   private val thePersonReport: PersonReport = new DefaultPersonReport
   def personReport: PersonReport = thePersonReport
@@ -31,6 +38,8 @@ abstract class Advisees(people:Person*) {
     person.lastName + person.firstNames.replaceAll(" ", "")
 
   def reports(): Unit = {
+    new File(reportDirectory).mkdirs()
+
     if (verbosity>0) println("Processing " + people.size + " advisee records")
     runOnly match {
       case Some(idx) => {

@@ -148,9 +148,9 @@ extends PersonReport {
 """
     }
 
-    val photosDir: Path =
-      FileSystems.getDefault().getPath(advisees.photoDirectory);
-    if (Files.isDirectory(photosDir)) {
+    val filesys = FileSystems.getDefault()
+    val photosDir: Path = filesys.getPath(advisees.photoDirectory);
+    if (Files.isDirectory(filesys.getPath(advisees.reportDirectory + "/" + photosDir.toString()))) {
       var photoFile = advisees.photoDirectory + "/" + who.id + ".jpg"
       if (!(new java.io.File(photoFile).exists)) {
         photoFile = advisees.photoDirectory + "/" + who.id + ".jpeg"
