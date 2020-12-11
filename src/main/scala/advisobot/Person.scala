@@ -8,15 +8,16 @@ import org.maraist.latex.{LaTeXdoc,LaTeXRenderable}
 import org.maraist.util.UniqueHashCode
 import org.maraist.outlines.{Outline}
 
-class Person(val id:String, val firstNames:String, val lastName:String,
-             val email:String, val programs:List[Program],
-             val current:List[Course],
-             val past:SortedMap[Term,SortedMap[Course,Grade]],
-             val active:Boolean, val otherUnits:Int,
-             val recommend: SortedMap[Term, List[ScheduleSuggestion]],
-             val notes: SortedMap[Term, Outline[String]] = SortedMap(),
-             val notesWidth: String = "5.25in",
-             val shrinkNotes: Int = 0) {
+class Person(
+  val id:String, val firstNames:String, val lastName:String,
+  val email:String, val programs:List[Program], val current:List[Course],
+  val past:SortedMap[Term,SortedMap[Course,Grade]],
+  val active:Boolean, val otherUnits:Int,
+  val recommend: SortedMap[Term, List[ScheduleSuggestion]] = SortedMap(),
+  val notes: SortedMap[Term, Outline[String]] = SortedMap(),
+  val calculateRecommendationIfEmpty: Boolean = true,
+  val notesWidth: String = "5.25in",
+  val shrinkNotes: Int = 0) {
   implicit val me: Person = this
 
   def this(id: String, firstNames: String, lastName: String, email: String,
@@ -152,6 +153,14 @@ class Person(val id:String, val firstNames:String, val lastName:String,
     report.writeReport(doc, this, advisees)
   def writeHandout(doc:LaTeXdoc)(implicit advisees: Advisees): Unit =
     writeReport(doc, advisees.personReport)
+
+  /**
+   * Assemble a model schedule for classes going forward
+   *
+   * @param base Starting term of planned schedule
+   */
+  def planSched(base: Term): SortedMap[Term,List[ScheduleSuggestion]] = ???
+
 }
 
 object Person {

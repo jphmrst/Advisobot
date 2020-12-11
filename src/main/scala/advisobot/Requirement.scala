@@ -75,6 +75,11 @@ trait Requirement extends UniqueHashCode {
   }
 }
 
+object Requirement {
+  implicit def requirementAsSingleton(r: Requirement): List[Requirement] =
+    List[Requirement](r)
+}
+
 /** Named predicate used to express additional conditions on a list
  * of courses intended to satisfy some requirement.
  */

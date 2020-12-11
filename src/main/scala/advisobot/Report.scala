@@ -20,6 +20,15 @@ extends PersonReport {
     val forTerm = advisees.forTerm
     val lastPast = advisees.lastPast
 
+    // Calculate a recommended schedule if appropriate.
+    val recommended = who.recommend.get(forTerm) match {
+      case Some(_) => who.recommend
+      case None => who.calculateRecommendationIfEmpty && who.active match {
+        case false => who.recommend
+        case true => who.planSched(forTerm)
+      }
+    }
+
     val disclaimerSuffix = """    \vspace*{\fill}
     \par
     {\small \textsl{\textbf{Notice}:  This report is not an official
@@ -30,7 +39,7 @@ extends PersonReport {
     information.}}""";
 
     var nowOrForward = SortedMap[Term, List[ScheduleSuggestion]]()
-    for ((semester, plan) <- who.recommend) {
+    for ((semester, plan) <- recommended) {
       if (lastPast < semester) {
         nowOrForward = nowOrForward + ((semester -> plan))
       }
@@ -173,7 +182,7 @@ extends PersonReport {
     doc ++= forTerm.toString()
     doc ++= "}\n      \\\\ \\hline Units & Class\n"
 
-    who.recommend.get(forTerm) match {
+    recommended.get(forTerm) match {
       case Some(recommendations) => {
         val oldFormatter = SelectionFormatter.currentFormatter
         SelectionFormatter.currentFormatter =
@@ -376,10 +385,10 @@ extends PersonReport {
         }
         doc ++= s"\\hline\\multicolumn{3}{@{}c@{}}{Total semester units: $totalUnits}\n"
 
-        if (who.recommend.contains(lastPast)) {
+        if (recommended.contains(lastPast)) {
           doc ++= "\\\\[2pt]\\multicolumn{3}{@{\\,}p{\\fullwidth}@{\\,}}{Advisor had recommended for current enrollment: \\raggedright "
           var recSep = ""
-          for (rec <- who.recommend(lastPast)) {
+          for (rec <- recommended(lastPast)) {
             doc ++= recSep
             doc ++= rec.description.plainText
             recSep = "; "

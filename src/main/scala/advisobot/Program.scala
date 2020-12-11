@@ -9,8 +9,19 @@ import org.maraist.util.UniqueHashCode
 import org.maraist.outlines.{Outline}
 import Trace._
 
+/**
+ * @param sequence Sequential ordering of requirements for constructing
+ * a sample schedule.  Co-requisites should be included within the same
+ * sublist; the ordering must respect all pre- and co-requisites or
+ * schedule generation will fail.   Can be omitted, in which case will
+ * be derived from the requirements by making each requirement into a
+ * singleton list.
+ */
 abstract class Program(val name: String, val longName: String,
-                       val requirements: List[Requirement]) {
+                       val requirements: List[Requirement],
+                       val sequence: List[List[Requirement]]) {
+  def this(name: String, longName: String, requirements: List[Requirement]) =
+    this(name, longName, requirements, requirements.map(List[Requirement](_)))
   def this(name: String, longName: String, requirements: Requirement*) =
     this(name, longName, requirements.toList)
   def this(name: String, requirements: Requirement*) =
