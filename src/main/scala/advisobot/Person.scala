@@ -3,6 +3,7 @@ package advisobot.core
 import scala.language.implicitConversions
 import scala.collection.{Map,SortedMap} // {Iterable,Map,Set,Seq}
 import scala.collection.mutable.{Builder,HashSet,HashMap,ListBuffer}
+import scala.util.{Random}
 import java.nio.file.{Paths, Files}
 import org.maraist.latex.{LaTeXdoc,LaTeXRenderable}
 import org.maraist.util.UniqueHashCode
@@ -15,9 +16,23 @@ class Person(
   val active:Boolean, val otherUnits:Int,
   val recommend: SortedMap[Term, List[ScheduleSuggestion]] = SortedMap(),
   val notes: SortedMap[Term, Outline[String]] = SortedMap(),
-  val calculateRecommendationIfEmpty: Boolean = true,
+
+  // Parameters for output
   val notesWidth: String = "5.25in",
-  val shrinkNotes: Int = 0) {
+  val shrinkNotes: Int = 0,
+
+  // Parameters for generating plan
+  val calculateRecommendationIfEmpty: Boolean = true,
+  val targetUnits: Int = 15,
+  val maxUnits: Int = 18,
+  val minUnits: Int = 12,
+  val maxLastUnits: Int = 18,
+  val minLastUnits: Int = 0,
+  val hardMaxUnits: Int = 18,
+  val hardMinUnits: Int = 0
+) {
+
+  import org.maraist.search.local.BeamSearchConverters._
   implicit val me: Person = this
 
   def this(id: String, firstNames: String, lastName: String, email: String,
@@ -155,11 +170,68 @@ class Person(
     writeReport(doc, advisees.personReport)
 
   /**
-   * Assemble a model schedule for classes going forward
+   * TODO Assemble a naive first schedule of classes for going forward
+   * from the given term.
    *
    * @param base Starting term of planned schedule
    */
-  def planSched(base: Term): SortedMap[Term,List[ScheduleSuggestion]] = ???
+  def getNaiveSchedule(base: Term): SortedMap[Term,List[ScheduleSuggestion]] =
+    ???
+
+  /**
+   * TODO Assemble a model schedule for classes going forward
+   *
+   * @param base Starting term of planned schedule
+   */
+  def planSched(base: Term): SortedMap[Term,List[ScheduleSuggestion]] = {
+    import org.maraist.search.local.StochasticBeamSearcher
+    import org.maraist.search.local.StochasticBeamBuilder
+    type Builder =
+      StochasticBeamBuilder[SortedMap[Term,List[ScheduleSuggestion]]]
+
+    val searcher =
+      new StochasticBeamSearcher[SortedMap[Term,List[ScheduleSuggestion]]](
+        evalSched(_),
+        false,
+        ???, // successors:  (S) => Iterable[Option[S]]
+        ???, // nextBeam:    (StochasticBeam[S]) => Option[Builder]
+        (_: Builder) => 50,
+        (_: Builder) => 10,
+        implicitly[Random]  // random:      Random
+      )
+
+    searcher.search(getNaiveSchedule(base))
+  }
+
+  /**
+   *  TODO Score a possible schedule for future semesters.
+   */
+  def evalSched(sched: SortedMap[Term,List[ScheduleSuggestion]]): Double = ???
+
+  /**
+   *  TODO Generate a possible schedule by swapping two classes.
+   */
+  def generateSwap(
+    sched: SortedMap[Term,List[ScheduleSuggestion]],
+    earlyTerm: Term, earlyItem: Int, laterTerm: Term, laterItem: Int
+  ): Option[SortedMap[Term,List[ScheduleSuggestion]]] = ???
+
+  /**
+   *  TODO Generate a possible schedule by moving one class
+   *  to an earlier term.
+   */
+  def generatePull(
+    sched: SortedMap[Term,List[ScheduleSuggestion]],
+    earlyTerm: Term, laterTerm: Term, item: Int
+  ): Option[SortedMap[Term,List[ScheduleSuggestion]]] = ???
+
+  /**
+   *  TODO Generate a possible schedule by combining two terms.
+   */
+  def generateCombine(
+    sched: SortedMap[Term,List[ScheduleSuggestion]],
+    earlyTerm: Term, laterTerm: Term
+  ): Option[SortedMap[Term,List[ScheduleSuggestion]]] = ???
 
 }
 
