@@ -66,6 +66,11 @@ trait Requirement extends UniqueHashCode {
   def formatUnsatisfied(doc:LaTeXdoc): Unit
   def isCourse(c: Course): Boolean
 
+  /**
+   *  Convert the requireent into completion suggestions.
+   */
+  def toSuggestions: List[ScheduleSuggestion]
+
   protected def succeeding(
     achievements: List[Achievement],
     satisfiers: HashMap[Requirement,List[Achievement]]
@@ -114,6 +119,11 @@ extends Requirement {
     None
   }
 
+  /**
+   *  TODO Convert the requirement into completion suggestions.
+   */
+  override def toSuggestions: List[ScheduleSuggestion] = ???
+
   override def count: Int = 1
   override def formatUnsatisfied(doc:LaTeXdoc): Unit = { doc ++= name }
   def isCourse(c: Course): Boolean = pred(c)
@@ -135,6 +145,12 @@ case class Require(val course: Course) extends Requirement {
       Some(steps)
     } else None
   }
+
+  /**
+   *  TODO Convert the requirement into completion suggestions.
+   */
+  override def toSuggestions: List[ScheduleSuggestion] = ???
+
   override def formatUnsatisfied(doc:LaTeXdoc):Unit = {
     doc ++= course.prefix
     doc ++= "\\,"
@@ -153,6 +169,12 @@ extends Requirement {
   override def name: String = shortName
   override def isCourse(c: Course): Boolean =
     subrequirements.exists(_.isCourse(c))
+
+  /**
+   *  TODO Convert the requirement into completion suggestions.
+   */
+  override def toSuggestions: List[ScheduleSuggestion] = ???
+
   override def addSatisfiers(
     implicit who: Person, satisfiers:HashMap[Requirement,List[Achievement]],
     checkset:HashSet[Course]
@@ -201,6 +223,12 @@ case class Complete(val task:Task) extends Requirement {
     implicit who: Person, satisfiers:HashMap[Requirement,List[Achievement]],
     checkset:HashSet[Course]
   ): Option[List[Achievement]] = None
+
+  /**
+   *  TODO Convert the requirement into completion suggestions.
+   */
+  override def toSuggestions: List[ScheduleSuggestion] = ???
+
   override def name: String = task.toString()
   override def formatUnsatisfied(doc:LaTeXdoc):Unit = { doc ++= task.tag() }
   override val count: Int = 1

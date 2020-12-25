@@ -40,7 +40,21 @@ class Grade(val pass: Boolean, val display: String,
   override def toString(): String = display
 }
 
-trait Term extends Ordered[Term] with LaTeXRenderable
+/**
+ *  Period in which classes are offered.
+ */
+trait Term extends Ordered[Term] with LaTeXRenderable {
+  def next: Term
+  def nextMajor: Term
+
+  /**
+   * TODO
+   */
+  def zipSchedule(
+    suggestions: List[ScheduleSuggestion]
+  ): SortedMap[Term,List[ScheduleSuggestion]] = ???
+}
+
 object Past {
   def apply(elems: (Term,SortedMap[Course,Grade])*): SortedMap[Term,SortedMap[Course,Grade]] =
     SortedMap[Term,SortedMap[Course,Grade]](elems: _*)

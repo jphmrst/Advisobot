@@ -240,6 +240,12 @@ case class WithConditions(val name: String, val req: Requirement,
                           val checks: List[SideCondition] = List())
 extends Requirement {
   override def isCourse(c: Course): Boolean = false
+
+  /**
+   *  TODO Convert the requirement into completion suggestions.
+   */
+  override def toSuggestions: List[ScheduleSuggestion] = ???
+
   override def addSatisfiers(
     implicit who: Person,
     satisfiers: HashMap[Requirement,List[Achievement]],
@@ -288,6 +294,12 @@ object AllWithConditions {
 case class AllSatisfying(val name: String, val req: Requirement)
 extends Requirement {
   override def isCourse(c: Course): Boolean = false
+
+  /**
+   *  TODO Convert the requirement into completion suggestions.
+   */
+  override def toSuggestions: List[ScheduleSuggestion] = ???
+
   override def
       addSatisfiers(implicit who: Person,
                     satisfiers:HashMap[Requirement,List[Achievement]],

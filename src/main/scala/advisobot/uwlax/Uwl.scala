@@ -55,9 +55,8 @@ object Spring extends SemesterCode("Spring")
 object Winter extends SemesterCode("Winter")
 object Summer extends SemesterCode("Summer")
 
-abstract class Semester(val term: SemesterCode, val year: Int, val code: Int)
+abstract class UwlTerm(val term: SemesterCode, val year: Int, val code: Int)
 extends Term {
-
   def toLaTeX(doc: LaTeXdoc) = {
     doc ++= term.name
     doc ++= " "
@@ -68,49 +67,63 @@ extends Term {
     case (that: Semester) => code - that.code
     case _ => -1
   }
+}
+
+class UndefTerm extends UwlTerm(Fall, 2099, 9999) {
+  override val next: Term = this
+  override val nextMajor: Term = this
+  override def toString(): String = "(calendar end)"
+}
+object UndefTerm extends UndefTerm
+
+abstract class Semester(term: SemesterCode, year: Int, code: Int,
+                        override val next: UwlTerm,
+                        override val nextMajor: UwlTerm)
+extends UwlTerm(term, year, code) {
   override def toString(): String = term.name + " " + year
 }
-object Fall14 extends Semester(Fall, 2014, 2154)
-object Spring15 extends Semester(Spring, 2015, 2157)
-object Summer15 extends Semester(Summer, 2015, 2160)
-object Fall15 extends Semester(Fall, 2015, 2164)
-object Spring16 extends Semester(Spring, 2016, 2167)
-object Summer16 extends Semester(Summer, 2016, 2170)
-object Fall16 extends Semester(Fall, 2016, 2174)
-object Spring17 extends Semester(Spring, 2017, 2177)
-object Summer17 extends Semester(Summer, 2017, 2180)
-object Fall17 extends Semester(Fall, 2017, 2184)
-object Spring18 extends Semester(Spring, 2018, 2187)
-object Summer18 extends Semester(Summer, 2018, 2190)
-object Fall18 extends Semester(Fall, 2018, 2194)
-object Winter19 extends Semester(Winter, 2019, 2196)
-object Spring19 extends Semester(Spring, 2019, 2197)
-object Summer19 extends Semester(Summer, 2019, 2200)
-object Fall19 extends Semester(Fall, 2019, 2204)
-object Winter20 extends Semester(Winter, 2020, 2206)
-object Spring20 extends Semester(Spring, 2020, 2207)
-object Summer20 extends Semester(Summer, 2020, 2210)
-object Fall20 extends Semester(Fall, 2020, 2214)
-object Winter21 extends Semester(Winter, 2021, 2216)
-object Spring21 extends Semester(Spring, 2021, 2217)
-object Summer21 extends Semester(Summer, 2021, 2220)
-object Fall21 extends Semester(Fall, 2021, 2224)
-object Winter22 extends Semester(Winter, 2022, 2226)
-object Spring22 extends Semester(Spring, 2022, 2227)
-object Summer22 extends Semester(Summer, 2022, 2230)
-object Fall22 extends Semester(Fall, 2022, 2234)
-object Winter23 extends Semester(Winter, 2023, 2236)
-object Spring23 extends Semester(Spring, 2023, 2237)
-object Summer23 extends Semester(Summer, 2023, 2240)
-object Fall23 extends Semester(Fall, 2023, 2244)
-object Winter24 extends Semester(Winter, 2024, 2246)
-object Spring24 extends Semester(Spring, 2024, 2247)
-object Summer24 extends Semester(Summer, 2024, 2250)
-object Fall24 extends Semester(Fall, 2024, 2254)
-object Winter25 extends Semester(Winter, 2025, 2256)
-object Spring25 extends Semester(Spring, 2025, 2257)
-object Summer25 extends Semester(Summer, 2025, 2260)
-object Fall25 extends Semester(Fall, 2025, 2264)
+
+object Fall25   extends Semester(Fall,   2025, 2264, UndefTerm, UndefTerm)
+object Summer25 extends Semester(Summer, 2025, 2260, Fall25, Fall25)
+object Spring25 extends Semester(Spring, 2025, 2257, Summer25, Fall25)
+object Winter25 extends Semester(Winter, 2025, 2256, Spring25, Spring25)
+object Fall24   extends Semester(Fall,   2024, 2254, Winter25, Spring25)
+object Summer24 extends Semester(Summer, 2024, 2250, Fall24, Fall24)
+object Spring24 extends Semester(Spring, 2024, 2247, Summer24, Fall24)
+object Winter24 extends Semester(Winter, 2024, 2246, Spring24, Spring24)
+object Fall23   extends Semester(Fall,   2023, 2244, Winter24, Spring24)
+object Summer23 extends Semester(Summer, 2023, 2240, Fall23, Fall23)
+object Spring23 extends Semester(Spring, 2023, 2237, Summer23, Fall23)
+object Winter23 extends Semester(Winter, 2023, 2236, Spring23, Spring23)
+object Fall22   extends Semester(Fall,   2022, 2234, Winter23, Spring23)
+object Summer22 extends Semester(Summer, 2022, 2230, Fall22, Fall22)
+object Spring22 extends Semester(Spring, 2022, 2227, Summer22, Fall22)
+object Winter22 extends Semester(Winter, 2022, 2226, Spring22, Spring22)
+object Fall21   extends Semester(Fall,   2021, 2224, Winter22, Spring22)
+object Summer21 extends Semester(Summer, 2021, 2220, Fall21, Fall21)
+object Spring21 extends Semester(Spring, 2021, 2217, Summer21, Fall21)
+object Winter21 extends Semester(Winter, 2021, 2216, Spring21, Spring21)
+object Fall20   extends Semester(Fall,   2020, 2214, Winter21, Spring21)
+object Summer20 extends Semester(Summer, 2020, 2210, Fall20, Fall20)
+object Spring20 extends Semester(Spring, 2020, 2207, Summer20, Fall20)
+object Winter20 extends Semester(Winter, 2020, 2206, Spring20, Spring20)
+object Fall19   extends Semester(Fall,   2019, 2204, Winter20, Spring20)
+object Summer19 extends Semester(Summer, 2019, 2200, Fall19, Fall19)
+object Spring19 extends Semester(Spring, 2019, 2197, Summer19, Fall19)
+object Winter19 extends Semester(Winter, 2019, 2196, Spring19, Spring19)
+object Fall18   extends Semester(Fall,   2018, 2194, Winter19, Spring19)
+object Summer18 extends Semester(Summer, 2018, 2190, Fall18, Fall18)
+object Spring18 extends Semester(Spring, 2018, 2187, Summer18, Fall18)
+object Fall17   extends Semester(Fall,   2017, 2184, Spring18, Spring18)
+object Summer17 extends Semester(Summer, 2017, 2180, Fall17, Fall17)
+object Spring17 extends Semester(Spring, 2017, 2177, Summer17, Fall17)
+object Fall16   extends Semester(Fall,   2016, 2174, Spring17, Spring17)
+object Summer16 extends Semester(Summer, 2016, 2170, Fall16, Fall16)
+object Spring16 extends Semester(Spring, 2016, 2167, Summer16, Fall16)
+object Fall15   extends Semester(Fall,   2015, 2164, Spring16, Spring16)
+object Summer15 extends Semester(Summer, 2015, 2160, Fall15, Fall15)
+object Spring15 extends Semester(Spring, 2015, 2157, Summer15, Fall15)
+object Fall14   extends Semester(Fall,   2014, 2154, Spring15, Spring15)
 
 object Suggestions {
   val ELECTIVE = new ScheduleSuggestion("Elective", 3)

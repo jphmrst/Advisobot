@@ -175,8 +175,12 @@ class Person(
    *
    * @param base Starting term of planned schedule
    */
-  def getNaiveSchedule(base: Term): SortedMap[Term,List[ScheduleSuggestion]] =
+  def getNaiveSchedule(base: Term): SortedMap[Term,List[ScheduleSuggestion]] = {
+    val builder = SortedMap.newBuilder[Term,List[ScheduleSuggestion]]
+    val programNaiveSchedules = programs.map(_.naiveSchedule(base))
+
     ???
+  }
 
   /**
    * TODO Assemble a model schedule for classes going forward
