@@ -46,13 +46,7 @@ class Grade(val pass: Boolean, val display: String,
 trait Term extends Ordered[Term] with LaTeXRenderable {
   def next: Term
   def nextMajor: Term
-
-  /**
-   * TODO
-   */
-  def zipSchedule(
-    suggestions: List[ScheduleSuggestion]
-  ): SortedMap[Term,List[ScheduleSuggestion]] = ???
+  def isMain: Boolean
 }
 
 object Past {

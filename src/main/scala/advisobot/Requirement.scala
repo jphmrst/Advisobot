@@ -67,7 +67,7 @@ trait Requirement extends UniqueHashCode {
   def isCourse(c: Course): Boolean
 
   /**
-   *  Convert the requireent into completion suggestions.
+   *  Convert the requirement into completion suggestions.
    */
   def toSuggestions: List[ScheduleSuggestion]
 

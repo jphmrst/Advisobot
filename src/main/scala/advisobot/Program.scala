@@ -44,13 +44,4 @@ abstract class Program(val name: String, val longName: String,
   }
 
   implicit def requirementsByNumber(req: Int) = requirements(req)
-
-  def naiveSchedule(base: Term): SortedMap[Term,List[ScheduleSuggestion]] = {
-    val suggestionsLists: List[List[ScheduleSuggestion]] =
-      sequence.map(_.map(_.toSuggestions)
-                    .fold(List[ScheduleSuggestion]())(_.concat(_)))
-    val sngList =
-      suggestionsLists.fold(List[ScheduleSuggestion]())(_.concat(_))
-    base.zipSchedule(sngList)
-  }
 }

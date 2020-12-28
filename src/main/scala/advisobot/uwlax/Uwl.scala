@@ -67,12 +67,15 @@ extends Term {
     case (that: Semester) => code - that.code
     case _ => -1
   }
+
+  override def isMain: Boolean = (term == Fall) || (term == Spring)
 }
 
 class UndefTerm extends UwlTerm(Fall, 2099, 9999) {
   override val next: Term = this
   override val nextMajor: Term = this
   override def toString(): String = "(calendar end)"
+  override def isMain: Boolean = true
 }
 object UndefTerm extends UndefTerm
 

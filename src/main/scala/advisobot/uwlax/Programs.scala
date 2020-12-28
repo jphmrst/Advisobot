@@ -1017,7 +1017,10 @@ object CHS2018 extends Program(
 }
 
 
-/** Combination of UWL general education requirements and CSH degree requirements (current this is just the same as 2019; 2020 specifics are TODO) */
+/**
+ * Combination of UWL general education requirements and CSH degree
+ * requirements.
+ */
 object GenEdAndCHS2020
 extends Program(
   "Gen. eds.", "General education and CSH requirements",
@@ -1028,50 +1031,53 @@ extends Program(
   viewAsProgram = false
   override def viewers: List[Viewer] =
     List(new Viewer {
-      override def write(implicit doc: LaTeXdoc, who: Person,
-                         satisfiers: Map[Requirement,List[Achievement]]): Unit = {
-    doc ++= """      \begin{tabular}[t]{|c@{~}l@{~~}c@{~}l@{~~}c@{~}l@{~~}c@{~}l|}
+      override def write(
+        implicit doc: LaTeXdoc, who: Person,
+        satisfiers: Map[Requirement,List[Achievement]]
+      ): Unit = {
+        doc ++= """      \begin{tabular}[t]{|c@{~}l@{~~}c@{~}l@{~~}c@{~}l@{~~}c@{~}l|}
         \multicolumn{8}{c}{"""
-    doc ++= longName
-    doc ++= """}
+        doc ++= longName
+        doc ++= """}
         \\ \hline """
-    GE00_FYS_2019.formatSatisfaction
-    doc ++= "\n          & "
-    GE04_GMS_2018.formatSatisfaction
-    doc ++= "\n          & "
-    CHS_LabSci_2018.formatSatisfaction
-    doc ++= "\n         \\\\ "
-    GE01_ENG_2018.formatSatisfaction
-    doc ++= "\n          & "
-    GE07_2018.formatSatisfaction
-    doc ++= "\n          & "
-    GE08_2018.formatSatisfaction
-    doc ++= "\n         \\\\ "
-    requirements(0).formatSatisfaction
-    doc ++= "\n          & "
-    GE04_HST_2018.formatSatisfaction
-    doc ++= "\n          & "
-    GE06_2018.formatSatisfaction
-    doc ++= "\n          & "
-    GE09_2018.formatSatisfaction
-    doc ++= "\n         \\\\ "
-    GE03_2018.formatSatisfaction
-    doc ++= "\n          & & & & & &"
+        GE00_FYS_2019.formatSatisfaction
+        doc ++= "\n          & "
+        GE04_GMS_2018.formatSatisfaction
+        doc ++= "\n          & "
+        CHS_LabSci_2018.formatSatisfaction
+        doc ++= "\n         \\\\ "
+        GE01_ENG_2018.formatSatisfaction
+        doc ++= "\n          & "
+        GE07_2018.formatSatisfaction
+        doc ++= "\n          & "
+        GE08_2018.formatSatisfaction
+        doc ++= "\n         \\\\ "
+        requirements(0).formatSatisfaction
+        doc ++= "\n          & "
+        GE04_HST_2018.formatSatisfaction
+        doc ++= "\n          & "
+        GE06_2018.formatSatisfaction
+        doc ++= "\n          & "
+        GE09_2018.formatSatisfaction
+        doc ++= "\n         \\\\ "
+        GE03_2018.formatSatisfaction
+        doc ++= "\n          & & & & & &"
 
-    // $self->comingElectivesTabularList($who, $dest, @currentElectives, 8);
+        // $self->comingElectivesTabularList($who, $dest, @currentElectives, 8);
 
-    doc ++= "        \\\\ \\hline\n      \\end{tabular}\\reqBoxVspace\\\\\n";
-    }
-  })
+        doc ++= "        \\\\ \\hline\n      \\end{tabular}\\reqBoxVspace\\\\\n";
+      }
+    })
 }
 
 private[programs]
 object CHS_LabSci_2018 extends Select(
   "Lab.\\ sci.", "CHS lab science", 2, //
   List(ANT102, BIO100, BIO105, CHM100, CHM103, ESC101, MIC100,
-  PHY103, PHY106, PHY125, PHY155, PHY160, PHY203,
-  BIO203, BIO210, BIO304, CHM104, ESC221, ESC222, PHY104, PHY204
-))
+       PHY103, PHY106, PHY125, PHY155, PHY160, PHY203,
+       BIO203, BIO210, BIO304, CHM104, ESC221, ESC222, PHY104, PHY204
+     )
+)
 
 private[programs]
 object GE00_FYS_2019

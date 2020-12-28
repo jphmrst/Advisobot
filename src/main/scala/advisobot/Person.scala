@@ -23,6 +23,8 @@ class Person(
 
   // Parameters for generating plan
   val calculateRecommendationIfEmpty: Boolean = true,
+  val planTermsOn: Set[Term] = Set[Term](),
+  val planTermsOff: Set[Term] = Set[Term](),
   val targetUnits: Int = 15,
   val maxUnits: Int = 18,
   val minUnits: Int = 12,
@@ -170,20 +172,76 @@ class Person(
     writeReport(doc, advisees.personReport)
 
   /**
-   * TODO Assemble a naive first schedule of classes for going forward
+   * Assemble a naive first schedule of classes for going forward
    * from the given term.
    *
    * @param base Starting term of planned schedule
    */
   def getNaiveSchedule(base: Term): SortedMap[Term,List[ScheduleSuggestion]] = {
-    val builder = SortedMap.newBuilder[Term,List[ScheduleSuggestion]]
-    val programNaiveSchedules = programs.map(_.naiveSchedule(base))
+    val reqListFn: List[Requirement] => List[ScheduleSuggestion] =
+      _.map(_.toSuggestions).fold(List[ScheduleSuggestion]())(_.concat(_))
 
-    ???
+    val sgsList: List[List[ScheduleSuggestion]] =
+      programs.map(_.sequence).map(_.map(reqListFn)).fold(Nil)(parMerge)
+
+    zipSchedule(base, sgsList)
+  }
+
+  private def parMerge(
+    xss: List[List[ScheduleSuggestion]], yss: List[List[ScheduleSuggestion]]
+  ): List[List[ScheduleSuggestion]] = xss match {
+    case Nil => yss
+    case (xs :: xss2) => yss match {
+      case Nil => xss
+      case (ys :: yss2) => (xs ++ ys) :: parMerge(xss2,yss2)
+    }
   }
 
   /**
-   * TODO Assemble a model schedule for classes going forward
+   * Align a series of
+   * {@link advisobot.core.ScheduleSuggestion ScheduleSuggestion}s
+   * with the next semesters in which this person is taking classes.
+   */
+  def zipSchedule(base: Term, suggestions: List[List[ScheduleSuggestion]]):
+  SortedMap[Term,List[ScheduleSuggestion]] =
+    zipSchedule(SortedMap.newBuilder[Term,List[ScheduleSuggestion]],
+                base, suggestions)
+
+  /**
+   * Internal method to populate a map with
+   * {@link advisobot.core.ScheduleSuggestion ScheduleSuggestion}s
+   * for coming semesters.
+   */
+  private def zipSchedule(
+    builder: Builder[(Term, List[ScheduleSuggestion]),
+                     SortedMap[Term, List[ScheduleSuggestion]]],
+    base: Term,
+    suggestions: List[List[ScheduleSuggestion]]
+  ): SortedMap[Term,List[ScheduleSuggestion]] = suggestions match {
+    // When the list of suggestion sets is empty, return the contents of
+    // the builders
+    case Nil => builder.result()
+
+    // So we have more classes.  First check if we're planning to take
+    // this term off.
+    case sgSet :: sgSets => planTermsOff(base) match {
+      case true => zipSchedule(builder, base.next, suggestions)
+
+      // Not taking this term off.  Still need to either find this it
+      // is a main term, or that we're taking classes in this minor
+      // term.
+      case false => (base.isMain || planTermsOn(base)) match {
+        case true => {
+          builder += ((base, sgSet))
+          zipSchedule(builder, base.next, sgSets)
+        }
+        case false => zipSchedule(builder, base.next, suggestions)
+      }
+    }
+  }
+
+  /**
+   * Assemble a model schedule for classes going forward.
    *
    * @param base Starting term of planned schedule
    */
@@ -197,8 +255,8 @@ class Person(
       new StochasticBeamSearcher[SortedMap[Term,List[ScheduleSuggestion]]](
         evalSched(_),
         false,
-        ???, // successors:  (S) => Iterable[Option[S]]
-        ???, // nextBeam:    (StochasticBeam[S]) => Option[Builder]
+        ???, // TODO successors:  (S) => Iterable[Option[S]]
+        ???, // TODO nextBeam:    (StochasticBeam[S]) => Option[Builder]
         (_: Builder) => 50,
         (_: Builder) => 10,
         implicitly[Random]  // random:      Random
@@ -206,6 +264,7 @@ class Person(
 
     searcher.search(getNaiveSchedule(base))
   }
+
 
   /**
    *  TODO Score a possible schedule for future semesters.
@@ -236,7 +295,6 @@ class Person(
     sched: SortedMap[Term,List[ScheduleSuggestion]],
     earlyTerm: Term, laterTerm: Term
   ): Option[SortedMap[Term,List[ScheduleSuggestion]]] = ???
-
 }
 
 object Person {
