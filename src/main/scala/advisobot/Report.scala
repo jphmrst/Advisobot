@@ -41,7 +41,7 @@ extends PersonReport {
     var nowOrForward = SortedMap[Term, List[ScheduleSuggestion]]()
     for ((semester, plan) <- recommended) {
       if (lastPast < semester) {
-        nowOrForward = nowOrForward + ((semester -> plan))
+        nowOrForward = nowOrForward ++ SortedMap(semester -> plan)
       }
     }
 
