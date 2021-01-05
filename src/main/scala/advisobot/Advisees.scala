@@ -131,33 +131,9 @@ abstract class Advisees(people:Person*) {
 
   /**
    * TODO Score a possible schedule for future semesters.  The score
-   * are to be minimized, and is the sum of penalties.
+   * are to be minimized, and by defaul is implemented as a sum of
+   * penalties.
    */
   def evalSched(sched: SortedMap[Term,List[ScheduleSuggestion]]): Double = ???
-
-  /**
-   *  TODO Generate a possible schedule by swapping two classes.
-   */
-  def generateSwap(
-    sched: SortedMap[Term,List[ScheduleSuggestion]],
-    earlyTerm: Term, earlyItem: Int, laterTerm: Term, laterItem: Int
-  ): Option[SortedMap[Term,List[ScheduleSuggestion]]] = ???
-
-  /**
-   *  TODO Generate a possible schedule by moving one class
-   *  to an earlier term.
-   */
-  def generatePull(
-    sched: SortedMap[Term,List[ScheduleSuggestion]],
-    earlyTerm: Term, laterTerm: Term, item: Int
-  ): Option[SortedMap[Term,List[ScheduleSuggestion]]] = ???
-
-  /**
-   *  TODO Generate a possible schedule by combining two terms.
-   */
-  def generateCombine(
-    sched: SortedMap[Term,List[ScheduleSuggestion]],
-    earlyTerm: Term, laterTerm: Term
-  ): Option[SortedMap[Term,List[ScheduleSuggestion]]] = ???
 
 }

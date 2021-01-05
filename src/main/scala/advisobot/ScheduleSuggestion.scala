@@ -54,3 +54,34 @@ object ScheduleSuggestion {
     result
   }
 }
+
+/**
+ * Placeholder for unimplemented object ideas.  This object will eventually
+ * go away.
+ */
+object ScheduleDerivationsPlaceholder {
+  /**
+   *  TODO Generate a possible schedule by swapping two classes.
+   */
+  def generateSwap(
+    sched: SortedMap[Term,List[ScheduleSuggestion]],
+    earlyTerm: Term, earlyItem: Int, laterTerm: Term, laterItem: Int
+  ): Option[SortedMap[Term,List[ScheduleSuggestion]]] = ???
+
+  /**
+   *  TODO Generate a possible schedule by moving one class
+   *  to an earlier term.
+   */
+  def generatePull(
+    sched: SortedMap[Term,List[ScheduleSuggestion]],
+    earlyTerm: Term, laterTerm: Term, item: Int
+  ): Option[SortedMap[Term,List[ScheduleSuggestion]]] = ???
+
+  /**
+   *  TODO Generate a possible schedule by combining two terms.
+   */
+  def generateCombine(
+    sched: SortedMap[Term,List[ScheduleSuggestion]],
+    earlyTerm: Term, laterTerm: Term
+  ): Option[SortedMap[Term,List[ScheduleSuggestion]]] = ???
+}
