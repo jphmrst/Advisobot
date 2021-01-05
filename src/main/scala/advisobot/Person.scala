@@ -253,7 +253,7 @@ class Person(
 
     val searcher =
       new StochasticBeamSearcher[SortedMap[Term,List[ScheduleSuggestion]]](
-        evalSched(_),
+        advisees.evalSched(_),
         false,
         advisees.getScheduleSuccessors(_),
         advisees.getNextBeam(_),
@@ -264,37 +264,6 @@ class Person(
 
     searcher.search(getNaiveSchedule(base))
   }
-
-
-  /**
-   *  TODO Score a possible schedule for future semesters.
-   */
-  def evalSched(sched: SortedMap[Term,List[ScheduleSuggestion]]): Double = ???
-
-  /**
-   *  TODO Generate a possible schedule by swapping two classes.
-   */
-  def generateSwap(
-    sched: SortedMap[Term,List[ScheduleSuggestion]],
-    earlyTerm: Term, earlyItem: Int, laterTerm: Term, laterItem: Int
-  ): Option[SortedMap[Term,List[ScheduleSuggestion]]] = ???
-
-  /**
-   *  TODO Generate a possible schedule by moving one class
-   *  to an earlier term.
-   */
-  def generatePull(
-    sched: SortedMap[Term,List[ScheduleSuggestion]],
-    earlyTerm: Term, laterTerm: Term, item: Int
-  ): Option[SortedMap[Term,List[ScheduleSuggestion]]] = ???
-
-  /**
-   *  TODO Generate a possible schedule by combining two terms.
-   */
-  def generateCombine(
-    sched: SortedMap[Term,List[ScheduleSuggestion]],
-    earlyTerm: Term, laterTerm: Term
-  ): Option[SortedMap[Term,List[ScheduleSuggestion]]] = ???
 }
 
 object Person {
