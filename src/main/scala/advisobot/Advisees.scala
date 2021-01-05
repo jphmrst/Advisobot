@@ -8,6 +8,7 @@ import java.nio.file.{Paths, Files}
 import org.maraist.latex.{LaTeXdoc,LaTeXRenderable}
 import org.maraist.util.UniqueHashCode
 import org.maraist.outlines.{Outline}
+import org.maraist.search.local.{StochasticBeam,StochasticBeamBuilder}
 import Trace._
 
 abstract class Advisees(people:Person*) {
@@ -72,4 +73,60 @@ abstract class Advisees(people:Person*) {
   def main(args: Array[String]): Unit = {
     reports()
   }
+
+  /**
+   * TODO Given a possible schedule, return variations of that schedule.
+   * This method will be passed as a function to the constructor of
+   * {@link org.maraist.search.local.StochasticBeamSearcher StochasticBeamSearcher}.
+   *
+   * @param src Schedule to be tweaked.
+   */
+  def getScheduleSuccessors(src: SortedMap[Term,List[ScheduleSuggestion]]):
+  Iterable[Option[SortedMap[Term,List[ScheduleSuggestion]]]] = {
+    ???
+  }
+
+  /**
+   * TODO Given the beam resulting from a search interation, return an empty
+   * beam when we should continue searching.
+   * This method will be passed as a function to the constructor of
+   * {@link org.maraist.search.local.StochasticBeamSearcher StochasticBeamSearcher}.
+   *
+   * @param beam Result of previous round of search.
+   */
+  def getNextBeam(
+    beam: StochasticBeam[SortedMap[Term,List[ScheduleSuggestion]]]):
+  Option[StochasticBeamBuilder[SortedMap[Term,List[ScheduleSuggestion]]]] = {
+    ???
+  }
+
+  /**
+   * Given a
+   * {@linkplain org.maraist.search.local.StochasticBeamBuilder beam builder},
+   * return the length which it should be.
+   * This method will be passed as a function to the constructor of
+   * {@link org.maraist.search.local.StochasticBeamSearcher StochasticBeamSearcher}.
+   *
+   * @param newBeam
+   * @return In this default implementation, 50
+   */
+  def getNextBeamLength(
+    newBeam: StochasticBeamBuilder[SortedMap[Term,List[ScheduleSuggestion]]]
+  ): Int = 50
+
+  /**
+   * Given a
+   * {@linkplain org.maraist.search.local.StochasticBeamBuilder beam builder},
+   * return the number of elements which should be selected based strictly
+   * on the beam ordering.
+   * This method will be passed as a function to the constructor of
+   * {@link org.maraist.search.local.StochasticBeamSearcher StochasticBeamSearcher}.
+   *
+   * @param beam
+   * @return In this default implementation, 10
+   */
+  def getNextBeamOrderShare(
+    beam: StochasticBeamBuilder[SortedMap[Term,List[ScheduleSuggestion]]]
+  ): Int = 10
+
 }

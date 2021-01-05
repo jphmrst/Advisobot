@@ -255,11 +255,11 @@ class Person(
       new StochasticBeamSearcher[SortedMap[Term,List[ScheduleSuggestion]]](
         evalSched(_),
         false,
-        ???, // TODO successors:  (S) => Iterable[Option[S]]
-        ???, // TODO nextBeam:    (StochasticBeam[S]) => Option[Builder]
-        (_: Builder) => 50,
-        (_: Builder) => 10,
-        implicitly[Random]  // random:      Random
+        advisees.getScheduleSuccessors(_),
+        advisees.getNextBeam(_),
+        advisees.getNextBeamLength(_),
+        advisees.getNextBeamOrderShare(_),
+        implicitly[Random]  // random: Random
       )
 
     searcher.search(getNaiveSchedule(base))
