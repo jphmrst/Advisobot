@@ -167,7 +167,7 @@ class Person(
   }
 
   def writeReport(doc: LaTeXdoc, report: PersonReport)(implicit advisees: Advisees) =
-    report.writeReport(doc, this, advisees)
+    report.writeReport(doc, this)
   def writeHandout(doc:LaTeXdoc)(implicit advisees: Advisees): Unit =
     writeReport(doc, advisees.personReport)
 
@@ -245,7 +245,7 @@ class Person(
    *
    * @param base Starting term of planned schedule
    */
-  def planSched(base: Term): SortedMap[Term,List[ScheduleSuggestion]] = {
+  def planSched(base: Term)(implicit advisees: Advisees): SortedMap[Term,List[ScheduleSuggestion]] = {
     import org.maraist.search.local.StochasticBeamSearcher
     import org.maraist.search.local.StochasticBeamBuilder
     type Builder =

@@ -11,12 +11,12 @@ import advisobot.core.Trace._
 import advisobot.core.Strings._
 
 trait PersonReport {
-  def writeReport(doc: LaTeXdoc, who: Person, advisees: Advisees): Unit
+  def writeReport(doc: LaTeXdoc, who: Person)(implicit advisees: Advisees): Unit
 }
 
 class DefaultPersonReport()
 extends PersonReport {
-  def writeReport(doc: LaTeXdoc, who: Person, advisees: Advisees): Unit = {
+  def writeReport(doc: LaTeXdoc, who: Person)(implicit advisees: Advisees): Unit = {
     val forTerm = advisees.forTerm
     val lastPast = advisees.lastPast
 
