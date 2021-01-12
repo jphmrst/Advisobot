@@ -10,6 +10,7 @@ import org.maraist.util.UniqueHashCode
 import org.maraist.outlines.{Outline}
 import org.maraist.search.local.{StochasticBeam,StochasticBeamBuilder}
 import Trace._
+import ScheduleSuggestion._
 
 abstract class Advisees(people:Person*) {
   implicit def cohort: Advisees = this
@@ -130,10 +131,22 @@ abstract class Advisees(people:Person*) {
   ): Int = 10
 
   /**
-   * TODO Score a possible schedule for future semesters.  The score
-   * are to be minimized, and by defaul is implemented as a sum of
-   * penalties.
+   * Score a possible schedule for future semesters.  The score are to
+   * be minimized, and by default is implemented as a sum of
+   * penalties determined by the [[advisobot.core.Advisees.scorers]] method.
    */
-  def evalSched(sched: SortedMap[Term,List[ScheduleSuggestion]]): Double = ???
+  def evalSched(sched: SortedMap[Term,List[ScheduleSuggestion]]): Double =
+    (for (scorer <- scorers) yield scorer(sched)).foldLeft(0.0)(_ + _)
 
+  /**
+   * An iterable collection of scoring functions, used in the default
+   * implementation of [[evalSched]].
+   */
+  def scorers: Iterable[SortedMap[Term,List[ScheduleSuggestion]] => Double] =
+    Seq(
+      weigh(10.0, scorePrereqGap(_)),
+      weigh(100.0, scoreOverUnder(_)),
+      weigh(1000.0, scoreHardOverload(_)),
+      weigh(1000.0, scoreHardUnderload(_))
+    )
 }

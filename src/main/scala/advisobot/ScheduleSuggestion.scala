@@ -41,6 +41,9 @@ extends LaTeXRenderable {
 }
 
 object ScheduleSuggestion {
+
+  type CandSchedule = SortedMap[Term,List[ScheduleSuggestion]]
+
   implicit def fromCourse(cl: Course): ScheduleSuggestion =
     new ScheduleSuggestion(new SpecificClass(cl), cl.units)
   def toTake(description: CourseSelection, units: UnitsRange) =
@@ -53,6 +56,59 @@ object ScheduleSuggestion {
     alertNext = false
     result
   }
+
+  /**
+    * Transform a function by multiplying its result by a scalar
+    * constant.
+    */
+  def weigh(
+    weight: Double,
+    fn: CandSchedule => Double
+  ): CandSchedule => Double =
+    (sched) => weight * fn(sched)
+
+  /**
+   * TODO Standard scoring function for a gap in time between
+   * prerequisites.
+   */
+  def scorePrereqGap(sched: CandSchedule): Double =
+    ???
+
+  /**
+   * TODO Standard counting function for scoring slight over- and
+   * underloads.
+   */
+  def scoreOverUnder(sched: CandSchedule): Double =
+    ???
+
+  /**
+   * TODO Standard counting function for scoring hard overloads.
+   */
+  def scoreHardOverload(sched: CandSchedule): Double =
+    ???
+
+  /**
+   * TODO Standard counting function for scoring hard underloads
+   * (except in last semester).
+   */
+  def scoreHardUnderload(sched: CandSchedule): Double =
+    ???
+
+  /**
+   * TODO Standard scoring function for scoring uneven distribution of
+   * classes matching a particular predicate.
+   */
+  def scoreUneven(
+    predicate: ScheduleSuggestion => Boolean,
+    sched: CandSchedule
+  ): Double = ???
+
+//  /**
+//   * Standard scoring function for
+//   */
+//  def score(sched: CandSchedule): Double =
+//    ???
+
 }
 
 /**
@@ -60,28 +116,28 @@ object ScheduleSuggestion {
  * go away.
  */
 object ScheduleDerivationsPlaceholder {
+  import ScheduleSuggestion.CandSchedule
+
   /**
    *  TODO Generate a possible schedule by swapping two classes.
    */
   def generateSwap(
-    sched: SortedMap[Term,List[ScheduleSuggestion]],
+    sched: CandSchedule,
     earlyTerm: Term, earlyItem: Int, laterTerm: Term, laterItem: Int
-  ): Option[SortedMap[Term,List[ScheduleSuggestion]]] = ???
+  ): Option[CandSchedule] = ???
 
   /**
    *  TODO Generate a possible schedule by moving one class
    *  to an earlier term.
    */
   def generatePull(
-    sched: SortedMap[Term,List[ScheduleSuggestion]],
+    sched: CandSchedule,
     earlyTerm: Term, laterTerm: Term, item: Int
-  ): Option[SortedMap[Term,List[ScheduleSuggestion]]] = ???
+  ): Option[CandSchedule] = ???
 
   /**
    *  TODO Generate a possible schedule by combining two terms.
    */
-  def generateCombine(
-    sched: SortedMap[Term,List[ScheduleSuggestion]],
-    earlyTerm: Term, laterTerm: Term
-  ): Option[SortedMap[Term,List[ScheduleSuggestion]]] = ???
+  def generateCombine(sched: CandSchedule, earlyTerm: Term, laterTerm: Term):
+  Option[CandSchedule] = ???
 }
