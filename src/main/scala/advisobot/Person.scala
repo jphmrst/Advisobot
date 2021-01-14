@@ -24,14 +24,7 @@ class Person(
   // Parameters for generating plan
   val calculateRecommendationIfEmpty: Boolean = true,
   val planTermsOn: Set[Term] = Set[Term](),
-  val planTermsOff: Set[Term] = Set[Term](),
-  val targetUnits: Int = 15,
-  val maxUnits: Int = 18,
-  val minUnits: Int = 12,
-  val maxLastUnits: Int = 18,
-  val minLastUnits: Int = 0,
-  val hardMaxUnits: Int = 18,
-  val hardMinUnits: Int = 0
+  val planTermsOff: Set[Term] = Set[Term]()
 ) {
 
   import org.maraist.search.local.BeamSearchConverters._

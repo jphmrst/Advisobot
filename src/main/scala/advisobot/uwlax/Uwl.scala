@@ -49,11 +49,11 @@ object TS extends Grade(true, "TS")
 object U extends Grade(false, "U", Some(0))
 object W extends Grade(false, "W")
 
-abstract class SemesterCode(val name: String)
-object Fall extends SemesterCode("Fall")
-object Spring extends SemesterCode("Spring")
-object Winter extends SemesterCode("Winter")
-object Summer extends SemesterCode("Summer")
+abstract class SemesterCode(val name: String, val hardMaxUnits: Int)
+object Fall extends SemesterCode("Fall", 18)
+object Spring extends SemesterCode("Spring", 18)
+object Winter extends SemesterCode("Winter", 3)
+object Summer extends SemesterCode("Summer", 9)
 
 abstract class UwlTerm(val term: SemesterCode, val year: Int, val code: Int)
 extends Term {
