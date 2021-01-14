@@ -90,10 +90,9 @@ abstract class Advisees(people:Person*) {
    *
    * @param src Schedule to be tweaked.
    */
-  def getScheduleSuccessors(src: CandSchedule): Iterator[CandSchedule] = {
+  def getScheduleSuccessors(src: CandSchedule): Iterator[CandSchedule] =
     sequenceIterators(for (xformer <- scheduleSuccessorBuilders)
                       yield xformer(src))
-  }
 
   /**
     * The sequence of functions to be used to derive one schedule from
@@ -153,18 +152,32 @@ abstract class Advisees(people:Person*) {
   // =================================================================
 
   /**
-   * TODO Given the beam resulting from a search interation, return an
-   * empty beam when we should continue searching. This method will
-   * be passed as a function to the constructor of
+   * Given the beam resulting from a search interation, return an
+   * empty beam when we should continue searching.  The key
+   * functionality of this method is the decision as to whether search
+   * should continue.  This method will be passed as a function to the
+   * constructor of
    * [[org.maraist.search.local.StochasticBeamSearcher][StochasticBeamSearcher]]}.
+   * The default implementation bases the decision on the number of
+   * generations and on the current low-scoring schedule.
    *
    * @param beam Result of previous round of search.
    */
-  def getNextBeam(
-    beam: StochasticBeam[CandSchedule]):
+  def getNextBeam(beam: StochasticBeam[CandSchedule]):
   Option[StochasticBeamBuilder[CandSchedule]] = {
-    ???
+    val generation: Int = beam.generation
+    val best: CandSchedule = beam.store.last
+    continueSearching(generation, best) match {
+      case true => Some(new StochasticBeamBuilder(beam))
+      case false => None
+    }
   }
+
+  /**
+    * TODO Decide whether to continue search.
+    */
+  def continueSearching(generation: Int, best: CandSchedule): Boolean =
+    ???
 
   /**
    * Given a
