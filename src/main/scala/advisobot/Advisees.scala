@@ -213,14 +213,14 @@ abstract class Advisees(people:Person*) {
    * be minimized, and by default is implemented as a sum of
    * penalties determined by the [[advisobot.core.Advisees.scorers]] method.
    */
-  def evalSched(sched: CandSchedule): Double =
+  def evalSched(sched: CandSchedule)(implicit who: Person): Double =
     (for (scorer <- scorers) yield scorer(sched)).foldLeft(0.0)(_ + _)
 
   /**
    * An iterable collection of scoring functions, used in the default
    * implementation of [[evalSched]].
    */
-  def scorers: Iterable[CandSchedule => Double] =
+  def scorers(implicit who: Person): Iterable[CandSchedule => Double] =
     Seq(
       weigh(10.0, scorePrereqGap(_)),
       weigh(100.0, scoreOverUnder(_)),

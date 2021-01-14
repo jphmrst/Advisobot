@@ -36,6 +36,10 @@ extends LaTeXRenderable {
     description.toLaTeX(doc)
     doc ++= "}}\n"
   }
+
+  def hasPrerequisite(preqCand: ScheduleSuggestion): Boolean =
+    description.hasPrerequisite(preqCand.description)
+
   override def toString(): String =
     "Suggestion<" + units.toString() + ": " + description.toString()
 }
@@ -87,51 +91,67 @@ object ScheduleSuggestion {
   }
 
   /**
-   * TODO Standard scoring function for a gap in time between
-   * prerequisites.
+   * Standard scoring function for a gap in time between
+   * prerequisites.  By default, returns the sum of the number of
+   * semesters separating each prerequisite/follow-up pair in the
+   * schedule.
    */
-  def scorePrereqGap(sched: CandSchedule): Double = {
+  def scorePrereqGap(sched: CandSchedule)(implicit advisees: Advisees, who: Person): Double = {
     var total = 0.0
     var thisSlot = 0
 
     for((_, suggestions) <- sched) {
-      if (thisSlot > 0) {
-        for(suggestion <- suggestions) {
-          var preSlot = 0
-
-          for((_, preSuggestions) <- sched if preSlot < thisSlot) {
-            for(preSuggestion <- preSuggestions) {
-              //
-            }
-
-            preSlot = preSlot + 1
-          }
-        }
-      }
+      if (thisSlot > 0)
+        for(suggestion <- suggestions)
+          total = total + scoreGapsIsPrereqsFor(sched, thisSlot, suggestion)
       thisSlot = thisSlot + 1
     }
 
-    return total
+    total
+  }
+
+  /**
+   * Standard scoring function for a gap in time between
+   * prerequisites.  By default, returns the some of the semesters
+   * separating each prerequisite/follow-up pair in the schedule.
+   */
+  def scoreGapsIsPrereqsFor(
+    sched: CandSchedule, slot: Int, suggestion: ScheduleSuggestion
+  ): Double = {
+    var total = 0.0
+    var preSlot = 0.0
+
+    for((_, preSuggestions) <- sched if preSlot < slot) {
+      for(preSuggestion <- preSuggestions) {
+        if (suggestion.hasPrerequisite(preSuggestion)) {
+          total = total + slot - preSlot - 1
+        }
+      }
+
+      preSlot = preSlot + 1
+    }
+
+    total
   }
 
   /**
    * TODO Standard counting function for scoring slight over- and
    * underloads.
    */
-  def scoreOverUnder(sched: CandSchedule): Double =
+  def scoreOverUnder(sched: CandSchedule)(implicit advisees: Advisees, who: Person): Double =
     ???
 
   /**
    * TODO Standard counting function for scoring hard overloads.
    */
-  def scoreHardOverload(sched: CandSchedule): Double =
+  def scoreHardOverload(sched: CandSchedule)(implicit advisees: Advisees, who: Person): Double =
     ???
 
   /**
    * TODO Standard counting function for scoring hard underloads
    * (except in last semester).
    */
-  def scoreHardUnderload(sched: CandSchedule): Double =
+  def scoreHardUnderload(sched: CandSchedule)(implicit advisees: Advisees, who: Person): Double =
     ???
 
   /**
@@ -141,7 +161,7 @@ object ScheduleSuggestion {
   def scoreUneven(
     predicate: ScheduleSuggestion => Boolean,
     sched: CandSchedule
-  ): Double = ???
+  )(implicit advisees: Advisees, who: Person): Double = ???
 
 //  /**
 //   * Standard scoring function for
