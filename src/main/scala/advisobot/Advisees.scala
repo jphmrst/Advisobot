@@ -75,44 +75,109 @@ abstract class Advisees(people:Person*) {
     reports()
   }
 
+  // =================================================================
+
+  import advisobot.core.ScheduleSuggestion.CandSchedule
+  type CandidateMutator = CandSchedule => Iterator[CandSchedule]
+  import org.maraist.util.Iterators._
+
   /**
-   * TODO Given a possible schedule, return variations of that schedule.
+   * Given a possible schedule, return variations of that schedule.
    * This method will be passed as a function to the constructor of
-   * {@link org.maraist.search.local.StochasticBeamSearcher StochasticBeamSearcher}.
+   * [[org.maraist.search.local.StochasticBeamSearcher][StochasticBeamSearcher]].
+   * By default, uses the transformers in
+   * [[scheduleSuccessorBuilders]].
    *
    * @param src Schedule to be tweaked.
    */
-  def getScheduleSuccessors(src: SortedMap[Term,List[ScheduleSuggestion]]):
-  Iterable[Option[SortedMap[Term,List[ScheduleSuggestion]]]] = {
-    ???
+  def getScheduleSuccessors(src: CandSchedule): Iterator[CandSchedule] = {
+    sequenceIterators(for (xformer <- scheduleSuccessorBuilders)
+                      yield xformer(src))
   }
 
   /**
-   * TODO Given the beam resulting from a search interation, return an empty
-   * beam when we should continue searching.
-   * This method will be passed as a function to the constructor of
-   * {@link org.maraist.search.local.StochasticBeamSearcher StochasticBeamSearcher}.
+    * The sequence of functions to be used to derive one schedule from
+    * another.  By default, includes [[generateSwaps]],
+    * [[generatePulls]] and [[generateCombines]].
+    */
+  def scheduleSuccessorBuilders: Seq[CandidateMutator] = Seq[CandidateMutator](
+    generateSwaps(_),
+    generatePulls(_),
+    generateCombines(_)
+  )
+
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+  /**
+   *  TODO Generate an iterator of the schedules obtained by swapping
+   *  two classes.
+   */
+  def generateSwaps(sched: CandSchedule): Iterator[CandSchedule] = ???
+
+  /**
+   *  TODO Generate a possible schedule by swapping two particular
+   *  classes.
+   */
+  def generateSwap(
+    sched: CandSchedule,
+    earlyTerm: Term, earlyItem: Int, laterTerm: Term, laterItem: Int
+  ): Option[CandSchedule] = ???
+
+  /**
+   *  TODO Generate an iterator of the schedules obtained by moving a
+   *  class to an earlier term.
+   */
+  def generatePulls(sched: CandSchedule): Iterator[CandSchedule] = ???
+
+  /**
+   *  TODO Generate a possible schedule by moving one particular class
+   *  to an earlier term.
+   */
+  def generatePull(
+    sched: CandSchedule,
+    earlyTerm: Term, laterTerm: Term, item: Int
+  ): Option[CandSchedule] = ???
+
+  /**
+   *  TODO Generate an iterator of the schedules obtained by combining
+   *  two terms.
+   */
+  def generateCombines(sched: CandSchedule): Iterator[CandSchedule] = ???
+
+  /**
+   *  TODO Generate a possible schedule by combining two specific terms.
+   */
+  def generateCombine(sched: CandSchedule, earlyTerm: Term, laterTerm: Term):
+  Option[CandSchedule] = ???
+
+  // =================================================================
+
+  /**
+   * TODO Given the beam resulting from a search interation, return an
+   * empty beam when we should continue searching. This method will
+   * be passed as a function to the constructor of
+   * [[org.maraist.search.local.StochasticBeamSearcher][StochasticBeamSearcher]]}.
    *
    * @param beam Result of previous round of search.
    */
   def getNextBeam(
-    beam: StochasticBeam[SortedMap[Term,List[ScheduleSuggestion]]]):
-  Option[StochasticBeamBuilder[SortedMap[Term,List[ScheduleSuggestion]]]] = {
+    beam: StochasticBeam[CandSchedule]):
+  Option[StochasticBeamBuilder[CandSchedule]] = {
     ???
   }
 
   /**
    * Given a
    * {@linkplain org.maraist.search.local.StochasticBeamBuilder beam builder},
-   * return the length which it should be.
-   * This method will be passed as a function to the constructor of
-   * {@link org.maraist.search.local.StochasticBeamSearcher StochasticBeamSearcher}.
+   * return the length which it should be.  This method will be passed
+   * as a function to the constructor of
+   * [[org.maraist.search.local.StochasticBeamSearcher][StochasticBeamSearcher]].
    *
    * @param newBeam
    * @return In this default implementation, 50
    */
   def getNextBeamLength(
-    newBeam: StochasticBeamBuilder[SortedMap[Term,List[ScheduleSuggestion]]]
+    newBeam: StochasticBeamBuilder[CandSchedule]
   ): Int = 50
 
   /**
@@ -121,13 +186,13 @@ abstract class Advisees(people:Person*) {
    * return the number of elements which should be selected based strictly
    * on the beam ordering.
    * This method will be passed as a function to the constructor of
-   * {@link org.maraist.search.local.StochasticBeamSearcher StochasticBeamSearcher}.
+   * [[org.maraist.search.local.StochasticBeamSearcher][StochasticBeamSearcher]].
    *
    * @param beam
    * @return In this default implementation, 10
    */
   def getNextBeamOrderShare(
-    beam: StochasticBeamBuilder[SortedMap[Term,List[ScheduleSuggestion]]]
+    beam: StochasticBeamBuilder[CandSchedule]
   ): Int = 10
 
   /**
@@ -135,14 +200,14 @@ abstract class Advisees(people:Person*) {
    * be minimized, and by default is implemented as a sum of
    * penalties determined by the [[advisobot.core.Advisees.scorers]] method.
    */
-  def evalSched(sched: SortedMap[Term,List[ScheduleSuggestion]]): Double =
+  def evalSched(sched: CandSchedule): Double =
     (for (scorer <- scorers) yield scorer(sched)).foldLeft(0.0)(_ + _)
 
   /**
    * An iterable collection of scoring functions, used in the default
    * implementation of [[evalSched]].
    */
-  def scorers: Iterable[SortedMap[Term,List[ScheduleSuggestion]] => Double] =
+  def scorers: Iterable[CandSchedule => Double] =
     Seq(
       weigh(10.0, scorePrereqGap(_)),
       weigh(100.0, scoreOverUnder(_)),

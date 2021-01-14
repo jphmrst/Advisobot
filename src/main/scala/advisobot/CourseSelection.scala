@@ -22,6 +22,11 @@ trait CourseSelection extends LaTeXRenderable {
   }
   def hasPrerequisite(cs : CourseSelection): Boolean
   def isPrerequisiteOf(c : Course): Boolean
+  def course: Option[Course]
+  def isCourse(c : Course): Boolean = course match {
+    case Some(cs) => cs == c
+    case None => false
+  }
 }
 object CourseSelection {
   implicit def fromCourse(cl: Course): CourseSelection = new SpecificClass(cl)
@@ -37,6 +42,7 @@ class SpecificClass(val cl: Course) extends CourseSelection {
   override def isPrerequisiteOf(later : Course): Boolean = {
     later.prerequisites.exists(_.isCourse(cl))
   }
+  override def course: Option[Course] = Some(cl)
   override def toString(): String = "Specific[" + cl.toString() + "]"
 }
 
@@ -49,6 +55,7 @@ class DescribedClasses(val desc: String) extends CourseSelection {
   override def plainText: String = desc.replace("\\\\"," ")
   override def hasPrerequisite(cs : CourseSelection): Boolean = false
   override def isPrerequisiteOf(c : Course): Boolean = false
+  override def course: Option[Course] = None
 }
 
 class PickOneSelection(val selections: Seq[CourseSelection])
@@ -77,6 +84,7 @@ extends CourseSelection {
   }
   override def hasPrerequisite(cs : CourseSelection): Boolean = false
   override def isPrerequisiteOf(c : Course): Boolean = false
+  override def course: Option[Course] = None
 }
 
 object PickOne {

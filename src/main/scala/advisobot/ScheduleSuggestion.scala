@@ -68,11 +68,51 @@ object ScheduleSuggestion {
     (sched) => weight * fn(sched)
 
   /**
+    * Given a candidate schedule and a class, return the index of the
+    * entry where that class occurs, or -1 if it does not occur.
+    */
+  def inSchedule(course: Course, sched: CandSchedule): Int = {
+    var slot = 0
+
+    for((term, suggestions) <- sched) {
+      for(suggestion <- suggestions) {
+        if (suggestion.description.isCourse(course)) {
+          return slot
+        }
+      }
+      slot = slot + 1
+    }
+
+    return -1
+  }
+
+  /**
    * TODO Standard scoring function for a gap in time between
    * prerequisites.
    */
-  def scorePrereqGap(sched: CandSchedule): Double =
-    ???
+  def scorePrereqGap(sched: CandSchedule): Double = {
+    var total = 0.0
+    var thisSlot = 0
+
+    for((_, suggestions) <- sched) {
+      if (thisSlot > 0) {
+        for(suggestion <- suggestions) {
+          var preSlot = 0
+
+          for((_, preSuggestions) <- sched if preSlot < thisSlot) {
+            for(preSuggestion <- preSuggestions) {
+              //
+            }
+
+            preSlot = preSlot + 1
+          }
+        }
+      }
+      thisSlot = thisSlot + 1
+    }
+
+    return total
+  }
 
   /**
    * TODO Standard counting function for scoring slight over- and
@@ -108,36 +148,4 @@ object ScheduleSuggestion {
 //   */
 //  def score(sched: CandSchedule): Double =
 //    ???
-
-}
-
-/**
- * Placeholder for unimplemented object ideas.  This object will eventually
- * go away.
- */
-object ScheduleDerivationsPlaceholder {
-  import ScheduleSuggestion.CandSchedule
-
-  /**
-   *  TODO Generate a possible schedule by swapping two classes.
-   */
-  def generateSwap(
-    sched: CandSchedule,
-    earlyTerm: Term, earlyItem: Int, laterTerm: Term, laterItem: Int
-  ): Option[CandSchedule] = ???
-
-  /**
-   *  TODO Generate a possible schedule by moving one class
-   *  to an earlier term.
-   */
-  def generatePull(
-    sched: CandSchedule,
-    earlyTerm: Term, laterTerm: Term, item: Int
-  ): Option[CandSchedule] = ???
-
-  /**
-   *  TODO Generate a possible schedule by combining two terms.
-   */
-  def generateCombine(sched: CandSchedule, earlyTerm: Term, laterTerm: Term):
-  Option[CandSchedule] = ???
 }
