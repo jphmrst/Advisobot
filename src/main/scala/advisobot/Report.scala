@@ -386,7 +386,12 @@ extends PersonReport {
         doc ++= s"\\hline\\multicolumn{3}{@{}c@{}}{Total semester units: $totalUnits}\n"
 
         if (recommended.contains(lastPast)) {
-          doc ++= "\\\\[2pt]\\multicolumn{3}{@{\\,}p{\\fullwidth}@{\\,}}{Advisor had recommended for current enrollment: \\raggedright "
+          doc ++= "\\\\[2pt]\\multicolumn{3}{@{\\,}p{\\fullwidth}@{\\,}}{Advisor "
+          if (forTerm == lastPast)
+            doc ++= "recommends"
+          else
+            doc ++= "had recommended"
+          doc ++= " for current enrollment: \\raggedright "
           var recSep = ""
           for (rec <- recommended(lastPast)) {
             doc ++= recSep

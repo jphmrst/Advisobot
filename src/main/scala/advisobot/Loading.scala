@@ -98,6 +98,7 @@ extends Loading {
 }
 
 object UnitsRange {
+  def apply(bot: Int, top: Int) = new UnitsRange(bot, Some(top))
   def exactly(exact: Int) = new UnitsRange(exact, Some(exact))
   def atLeast(start: Int) = new UnitsRange(start, None)
   implicit def fromInt(x: Int): UnitsRange = exactly(x)
