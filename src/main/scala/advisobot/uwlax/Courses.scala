@@ -179,10 +179,11 @@ object CS410 extends CS(3, 410, "FOSS Dev.", CS340)
 object CS418 extends CS(3, 418, "Mobile App. Dev.", CS340)
 object CS419ml extends CS(3, 419, "Machine Learning", CS340)
 object CS419opt extends CS(3, 419, "Optimization", CS340)
-object CS419sysprog extends CS(3, 419, "Systems Programming")
-object CS419genprog extends CS(3, 419, "Genetic Programming")
-object CS419gen extends CS(3, 419, "Topics in Comp. Sci.")
-object CS421 extends CS(3, 421, "Prog. Lang. Concepts",
+object CS419sysprog extends CS(3, 419, "Systems Prog.", "Systems Programming")
+object CS419genprog extends CS(3, 419, "Genetic Prog.", "Genetic Programming")
+object CS419gen extends CS(3, 419, "Topics Comp. Sci.",
+                           "Topics in Computer Science")
+object CS421 extends CS(3, 421, "PL Concepts", "Programming Language Concepts",
                         CS340, OneOf(CS225,MTH225))
 object CS431 extends CS(3, 431, "Intro. Robotics", CS340)
 object CS441 extends CS(3, 441, "Op. Sys. Concepts", CS340, CS370)
@@ -246,13 +247,16 @@ object CS752 extends CS(3, 752, "Ind. Study")
 object CS798 extends VariableUnits("CS", 798, "Sw. Dev. Project",
                                    1, 6)
 
-object CPE105 extends CPE(1, 105, "Introduction to the Computing Environment")
+object CPE105 extends CPE(1, 105, "Intro.\\,Comput.\\,Env.",
+                          "Introduction to the Computing Environment")
 object CPE212 extends CPE(3, 212, "Digital Logic")
-object CPE309 extends CPE(3, 309, "Systems Development")
-object CPE321 extends CPE(3, 321, "Introduction to Digital Signal Processing")
+object CPE309 extends CPE(3, 309, "Systems Dev.", "Systems Development")
+object CPE321 extends CPE(3, 321, "Intro. Dig. Signal Proc.",
+                          "Introduction to Digital Signal Processing")
 object CPE395 extends VariableUnits("CPE", 395, "Independent Study",
                                     1, 3)
-object CPE406 extends CPE(3, 406, "Architecture of Parallel Systems")
+object CPE406 extends CPE(3, 406, "Arch. Par. Sys.",
+                          "Architecture of Parallel Systems")
 object CPE419 extends VariableUnits("CPE", 419,
                                     "Topics in Computer Engineering",
                                     1, 3)
