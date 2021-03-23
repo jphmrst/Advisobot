@@ -21,14 +21,14 @@ object Notes {
   val WELL_REMOVING_HOLD = item(
     "Let me know if you have other questions about your next steps.  From what I see, you have been choosing classes well, and doing well in them.",
     "I normally require an advising meeting, but I think we can skip ours this semester.  So I will be removing any advising hold from your account when the Records Office adds them.",
-    "However, if you have questions and do want to have a video meeting, of course I am happy to do so, and will be sending an email soon with instructions for scheduling an appointment.")
+    "However, if you have questions and do want to have a video meeting, of course I am happy to do so, and will be sending an email soon about scheduling an appointment.")
 
   /** When I will remove the advising hold, and note the rest is obvious. */
   val CLEAR_REMOVING_HOLD = item(
-    "The classes you need to take at this point are clear.  So I think we can skip an advising meeting this semester, and will remove any advisor's hold on your registration when the Records Office adds them.  However if you have questions and do want to have a video meeting, then of course I am happy to do so, and will be sending an email soon with instructions for scheduling an appointment.")
+    "The classes you need to take at this point are clear.  So I think we can skip an advising meeting this semester, and will remove any advisor's hold on your registration when the Records Office adds them.  However if you have questions and do want to have a video meeting, then of course I am happy to do so, and will be sending an email soon about scheduling an appointment.")
 
   /** Expect a telecon before removing the advising hold. */
-  val REQUIRE_TELECON = "We should meet to go over your progress this semester, and to discuss this course plan.  I will be sending an email soon with instructions for scheduling an appointment."
+  val REQUIRE_TELECON = "We should meet to go over your progress this semester, and to discuss this course plan.  I will be sending an email soon about scheduling an appointment."
 
   /** Check the total unit on WINGS because of retakes. */
   val RETAKES_SO_WINGS = "You have retaken one or more classes, so the total units on this page may be an overestimate.  Check with WINGS to make sure you are on track for the 120-unit graduation requirement."

@@ -25,9 +25,9 @@ object CSmajor2018 extends Program(
                                            CS402, CS410, CS418,
                                            CS419ml, CS419opt, CS419gen,
                                            CS431, CS446, CS449, CS451, CS452,
-                                           CS453, CS454, CS455, CS456, CS464,
-                                           CS470, CS471, CS472, CS475, CS476,
-                                           CourseOfUnits("CS", 499)))),
+                                           CS453, CS454, CS455, CS456, CS457,
+                                           CS464, CS470, CS471, CS472, CS475,
+                                           CS476, CourseOfUnits("CS", 499)))),
                  List(
                    UnitsCondition("total", 12),
                    UnitsCondition("at 300/400-level", 6, _.number>=300),
@@ -350,6 +350,32 @@ extends Program("Info. Sys. min.", "Information Systems minor",
                           0, 1, 2, 3, 4, 5))
 }
 
+/** Requirements for a minor in economics (as of 2021) */
+object EconMinor2021
+extends Program("Info. Sys. min.", "Information Systems minor",
+                ECO110, ECO120,
+                WithConditions(
+                  "Economics electives",
+                  AllSatisfying(
+                    "Economics electives",
+                    Select("Elective", "Electives", 1,
+                           List(ECO301, ECO303, ECO305, ECO306, ECO307, ECO308,
+                                ECO310, ECO311, ECO312, ECO320, ECO321, ECO330,
+                                ECO336, ECO340, ECO346, ECO350, ECO375, ECO376,
+                                ECO400, ECO402, ECO409, ECO435, ECO440,
+                                CourseOfUnits("ECO", 450, 1),
+                                CourseOfUnits("ECO", 474, 1),
+                                CourseOfUnits("ECO", 499, 1)))),
+                  List(
+                    UnitsCondition("total", 12)
+                  ))
+) {
+
+  override def viewers: List[Viewer] =
+    List(new SimpleViewer("Economics minor core", 2, 0, 1),
+         ConditionsViewer(req=2, columns=3))
+}
+
 /** Requirements for a minor in astronomy (as of 2018) */
 object AstronomyMinor2018
 extends Program("Astronomy minor", "Physics minor with astronomy emphasis",
@@ -399,13 +425,10 @@ extends Program("Creative writing minor", "Creative writing minor",
                   AllSatisfying(
                     "Writing, language and publishing",
                     Select("Elective", "Electives", 1,
-                           List(ENG313, ENG314, ENG317, ENG320, ENG325,
-                                ENG326, ENG327, ENG330, ENG331, ENG332,
-                                ENG335, ENG337, ENG339, ENG343, ENG416,
-                                ENG417, ENG433))),
-                  List(
-                    UnitsCondition("total", 3)
-                  )),
+                           List(ENG313, ENG314, ENG317, ENG320, ENG325, ENG326,
+                                ENG327, ENG330, ENG331, ENG332, ENG335, ENG337,
+                                ENG339, ENG343, ENG416, ENG417, ENG433))),
+                  List(UnitsCondition("total", 3) )),
                 Select("Forms requirement",
                        "Forms of fiction or poetry", 1,
                        List(ENG446, ENG449)),

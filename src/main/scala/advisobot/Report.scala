@@ -25,7 +25,8 @@ extends PersonReport {
       case Some(_) => who.recommend
       case None => who.calculateRecommendationIfEmpty && who.active match {
         case false => who.recommend
-        case true => who.planSched(forTerm)
+        // TODO Uncomment if developing this
+        case true => who.recommend // who.planSched(forTerm)
       }
     }
 

@@ -161,6 +161,7 @@ object Suggestions {
   val SPAN_WRITTEN = new ScheduleSuggestion("Span. writing prfcy.", 3)
   val SPAN_ORAL = new ScheduleSuggestion("Span. oral prfcy.", 3)
   val SPAN_ELECTIVE = new ScheduleSuggestion("Spanish elective", 3)
+  val ECON_ELECTIVE = new ScheduleSuggestion("Econ. elective\\\\(300/400-lv.)", 3)
   val NON_CS_3unitsplus =
     new ScheduleSuggestion("Non-CS", UnitsRange.atLeast(3))
   val UPPER_NON_CS_3unitsplus =
