@@ -2,9 +2,9 @@ package uwlcs.advisobot.programs
 import scala.collection.Map
 import scala.collection.mutable.HashMap
 import org.maraist.latex.LaTeXdoc
-import advisobot.core.{Program,Requirement,Select,Person,Grade,Term,
+import advisobot.core.{Complete,Program,Requirement,Select,Person,Grade,Term,
                        Achievement,SideCondition,Viewer,CoursePredicate,
-                       ScheduleSuggestion, UnitsRange}
+                       ScheduleSuggestion, DescribedClasses, UnitsRange, Task}
 import advisobot.builder._
 import advisobot.builder.Functions._
 import uwlcs.advisobot._
@@ -323,6 +323,55 @@ object MathMinor2018 extends Program(
 }
 
 // -----------------------------------------------------------------
+
+/** Requirements for a minor in computational science (as of 2021) */
+object ComputationalMinor2021
+extends Program("Cmptnl. sci. min.", "Computational science minor requirements",
+                CMP390, CourseOfUnits("CMP", 490, 3),
+                Complete(Task("From major", 3)),
+                Complete(Task("From non-major", 3)),
+
+                WithConditions(
+                  "Natural science introductory sequence",
+                  AllSatisfying(
+                    "Natural science introductory sequence",
+                    Select("Options", "Options", 1,
+                           List(PHY103, PHY104, PHY203, PHY204,
+                                ESC101, ESC221, ESC222,
+                                BIO100, BIO105, BIO203, BIO210, BIO304,
+                                CHM100, CHM103, CHM104))),
+                  List(
+                    UncheckedCondition("Must be a two-class introductory sequence")
+                  )),
+                WithConditions(
+                  "Additional natural science introductory courses",
+                  AllSatisfying(
+                    "Additional natural science introductory courses",
+                    Select("Options", "Options", 1,
+                           List(PHY103, PHY104, PHY203, PHY204,
+                                ESC101, ESC221, ESC222,
+                                BIO100, BIO105, BIO203, BIO210, BIO304,
+                                CHM100, CHM103, CHM104))),
+                  List(
+                    UncheckedCondition("Two classes, different department than intro. sequence")
+                  ))
+) {
+
+  val suggestMajor: ScheduleSuggestion =
+    new ScheduleSuggestion(
+      new DescribedClasses("In-major cmptnl.\\\\sci. elective"),
+      UnitsRange(3,5))
+
+  val suggestNonmajor: ScheduleSuggestion =
+    new ScheduleSuggestion(
+      new DescribedClasses("Non-major cmptnl.\\\\sci. elective"),
+      UnitsRange(3,5))
+
+  override def viewers: List[Viewer] =
+    List(new SimpleViewer("Computational science minor", 4,  0, 1, 2, 3),
+         ConditionsViewer(req=4, columns=2),
+         ConditionsViewer(req=5, columns=2))
+}
 
 /** Requirements for a minor in business administration (as of 2018) */
 object BusinessAdminMinor2018

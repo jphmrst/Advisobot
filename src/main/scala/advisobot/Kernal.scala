@@ -25,10 +25,21 @@ trait Achievement extends UniqueHashCode {
 }
 
 /**
- * Placeholder for forms of {@link advisobot.core.Achievement Achievement}
+ * Forms of {@link advisobot.core.Achievement Achievement}
  * besides {@link advisobot.core.Course Course}s; not currently used.
  */
 trait Task extends Achievement
+
+/**
+ * Some task described only by unstructured text.
+ */
+class TaskDescription(val desc: String, val units: Int) extends Task {
+  override def tag(): String = desc
+}
+
+object Task {
+  def apply(desc: String, units: Int): Task = new TaskDescription(desc, units)
+}
 
 trait Viewer {
   def write(implicit doc: LaTeXdoc, who: Person,

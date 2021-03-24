@@ -433,6 +433,9 @@ extends PersonReport {
 
     // Section about future plans, if planned out more than one semester
     if (nowOrForward.size > 1) {
+      if (advisees.planPageBreak || who.planPageBreak) {
+        doc ++= "\\clearpage\n"
+      }
       doc ++= "\\section*{Forward plan}\n\\raggedright\n"
       doc ++= "\\begin{multicols}{4}\n"
       var postPlanUnits: UnitsRange = new UnitsRange(who.unitsProspective)

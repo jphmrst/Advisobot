@@ -20,6 +20,7 @@ class Person(
   // Parameters for output
   val notesWidth: String = "5.25in",
   val shrinkNotes: Int = 0,
+  val planPageBreak: Boolean = false,
 
   // Parameters for generating plan
   val calculateRecommendationIfEmpty: Boolean = true,
@@ -268,8 +269,9 @@ object Person {
     recommend: SortedMap[Term, List[ScheduleSuggestion]],
     active: Boolean=true, otherUnits: Int=0,
     notes: SortedMap[Term, Outline[String]] = SortedMap(),
-    shrinkNotes: Int = 0
+    shrinkNotes: Int = 0,
+    planPageBreak: Boolean = false
   ) = new Person(id, firstNames, lastName, email, programs,
                  current, past, active, otherUnits, recommend, notes,
-                 shrinkNotes = shrinkNotes)
+                 shrinkNotes = shrinkNotes, planPageBreak = planPageBreak)
 }
