@@ -86,4 +86,9 @@ object Notes {
 
   /** Variation for new change-of-majors. */
   val START_120_MAJOR_CHANGE = "It is particularly important to start taking classes in the CS major.  During the next two semesters you will be taking the introductory sequence, which limits you to a few CS classes per semester.  Make sure you stick to the recommended CS classes for each semester, since there is a firm prerequisite structure at the beginning of the major.  If a class you need is full, contact the professor of the section in which you would prefer to enroll to discuss your situation, and be flexible about registering in other sections."
+
+  val CS_UPPER_CORE_ORDER = item(
+    "None of the three CS 400-level core classes depend on each other.  But as a general rule of thumb, we recommend:",
+    "You should take CS421 before CS442.  CS421 covers ideas about programming languages, where CS442 implements many of these ideas.  Many students find it easier to learn about the ideas in general before working on an implementation.",
+    "You should avoid taking CS441 and CS442 in the same semester if possible.  Both of these classes are heavy project classes, and many students find their time management to be easier when they are not taken together.")
 }
