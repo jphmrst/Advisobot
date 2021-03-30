@@ -74,6 +74,11 @@ object Notes {
     "The College of Science and Health requires all students with no minor or second major to take eighteen units outside of Computer Science.  You should start taking some of those courses now.  Twelve of the eighteen units must be upper-level, so you may need some time to satisfy their prerequisites.",
     "Alternatively, you might think about a minor that would interest you, and which would not require too many additional courses.  The 18-unit requirement goes away when you have declared a minor or second major with the Dean's office.")
 
+  def discussedMinorNotRegistered(minor: String) = item(
+    "Last semester we had discussed a " + minor + " minor for you.  However I do not see any declared minor for you at this point.  If you are still interested in that program, you should declare it with the CSH Dean's office.  Let me know if you do declare a minor or second major; when I see it on WINGS, I can re-generate your course plan.",
+    "The College of Science and Health requires all students with no minor or second major to take eighteen units outside of Computer Science.  If you choose to declare a minor (any, not just " + minor + ") or second major, this eighteen-unit requirement will be replaced by the requirements for that minor/major."
+  )
+
   /** Think about a minor, with caveats for a compressed schedule in which there is little time for prerequisites for required upper-level electives. */
   val CONSIDER_MINOR_SHORT_TIME_FOR_UPPERS = item(
     "The College of Science and Health requires all students with no minor or second major to take eighteen units outside of Computer Science.",
@@ -91,4 +96,16 @@ object Notes {
     "None of the three CS 400-level core classes depend on each other.  But as a general rule of thumb, we recommend:",
     "You should take CS421 before CS442.  CS421 covers ideas about programming languages, where CS442 implements many of these ideas.  Many students find it easier to learn about the ideas in general before working on an implementation.",
     "You should avoid taking CS441 and CS442 in the same semester if possible.  Both of these classes are heavy project classes, and many students find their time management to be easier when they are not taken together.")
+
+  val GRADUATE_EARLY = "You could probably graduate a semester early by taking electives and other non-CS classes during summers and January terms.  We can discuss alternative plans for classes going forward."
+
+  def EARLY_CONSIDER_FIVEYEAR_MSE_GENERAL = item(
+    "The Department of Computer Science offers a five-year master of software engineering (MSE) degree.  In general, a master's degree offers a salary boost over a bachelor's degree, and many of our students find this trade-off with an extra year of study to be worthwhile.",
+    "The main difference between the bachelor's by itself and the five-year MSE is that bachelor's candidate take the undergraduate software engineering course CS341, but MSE candidate take the graduate version CS741.  So to preserve this option of the MSE for you, this plan pushes CS341 to your last semester.",
+    "The other difference between the bachelor's degree and the MSE is that the MSE requires a higher number of units on average each semester.  We can discuss alternative plans for classes going forward, if this option interests you.")
+
+  def earlyConsiderFiveYearMSECourse(extra: String) = item(
+    "The Department of Computer Science offers a five-year master of software engineering (MSE) degree.  In general, a master's degree offers a salary boost over a bachelor's degree, and many of our students find this trade-off with an extra year of study to be worthwhile.",
+    "The main difference between the bachelor's by itself and the five-year MSE is that bachelor's candidate take the undergraduate software engineering course CS341, but MSE candidate take the graduate version CS741.  So to preserve this option of the MSE for you, this plan pushes CS341 to your last semester.",
+    "The other difference between the bachelor's degree and the MSE is that the MSE requires a higher number of units on average each semester.  If you are interested in an extra course to keep the MSE as an easier option, I would suggest " + extra + ".")
 }

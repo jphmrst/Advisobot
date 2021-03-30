@@ -258,8 +258,19 @@ extends PersonReport {
       doc ++= sep
       prog.writeForHandout(doc, who)
     }
+
+    if (advisees.wideNotes || who.wideNotes) {
+      doc ++= "    \\end{tabular} \\par\n"
+    }
+
     {
-      doc ++= s"\\begin{minipage}{${who.notesWidth}}\n\\textcolor{"
+      doc ++= "\\begin{minipage}{"
+      if (advisees.wideNotes || who.wideNotes) {
+        doc ++= "\\textwidth"
+      } else {
+        doc ++= who.notesWidth.toString()
+      }
+      doc ++= "}\n\\textcolor{"
       doc ++= SelectionFormatter.handwrittenFormatter.colorName
       doc ++= "}{"
       doc ++= SelectionFormatter.handwrittenFormatter.formatter
@@ -282,7 +293,9 @@ extends PersonReport {
             res
           }
 
-          if (thisShrinkNotes > 4) {
+          if (thisShrinkNotes > 5) {
+            doc ++= "\\fontsize{8}{9}\\selectfont "
+          } else if (thisShrinkNotes > 4) {
             doc ++= "\\fontsize{9}{10}\\selectfont "
           } else if (thisShrinkNotes > 3) {
             doc ++= "\\fontsize{9.5}{11}\\selectfont "
@@ -302,7 +315,10 @@ extends PersonReport {
       doc ++= "}\n\\end{minipage}\n"
     }
 
-    doc ++= "    \\end{tabular}\n"
+    if (!advisees.wideNotes && !who.wideNotes) {
+      doc ++= "    \\end{tabular}\n"
+    }
+
     doc ++= "\n    \\clearpage\n\n"
 
     if (who.past.size > 0 || who.current.size > 0) {

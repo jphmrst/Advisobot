@@ -21,6 +21,7 @@ abstract class Advisees(people:Person*) {
   val registrarName: String
   val recordsSystemName: String
   val shrinkNotes: Int
+  val wideNotes: Boolean
   val planPageBreak: Boolean
   implicit val verbosity: Int = 1
 

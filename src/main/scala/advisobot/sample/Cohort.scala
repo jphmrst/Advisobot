@@ -113,6 +113,7 @@ object Cohort extends Advisees(
   override val registrarName: String = "Records \\& Registration"
   override val recordsSystemName: String = "WINGS"
   override val shrinkNotes: Int = 0
+  override val wideNotes: Boolean = false
   override val planPageBreak: Boolean = false
   reportDirectory = "advisobot-reports"
   reportToPhotoDirPath = Some(".")

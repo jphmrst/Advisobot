@@ -20,6 +20,7 @@ class Person(
   // Parameters for output
   val notesWidth: String = "5.25in",
   val shrinkNotes: Int = 0,
+  val wideNotes: Boolean = false,
   val planPageBreak: Boolean = false,
 
   // Parameters for generating plan
@@ -270,8 +271,10 @@ object Person {
     active: Boolean=true, otherUnits: Int=0,
     notes: SortedMap[Term, Outline[String]] = SortedMap(),
     shrinkNotes: Int = 0,
+    wideNotes: Boolean = false,
     planPageBreak: Boolean = false
   ) = new Person(id, firstNames, lastName, email, programs,
                  current, past, active, otherUnits, recommend, notes,
-                 shrinkNotes = shrinkNotes, planPageBreak = planPageBreak)
+                 shrinkNotes = shrinkNotes, wideNotes = wideNotes,
+                 planPageBreak = planPageBreak)
 }

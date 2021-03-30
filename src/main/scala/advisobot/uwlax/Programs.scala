@@ -281,7 +281,7 @@ object MathMinor2018 extends Program(
       "300/400-level mathematics electives",
       Select("300/400-level mathematics electives", 1,
              List(OneOf(MTH225,CS225), OneOf(STAT245,MTH245), MTH265,
-             MTH151, MTH310, MTH311, MTH317, MTH331, MTH353,
+             MTH151, MTH310, MTH311, MTH317, MTH320, MTH331, MTH353,
              MTH362, MTH371, MTH407, MTH408, MTH411,
              MTH412, MTH415, MTH421, MTH461, MTH480, CS453
            /* MTH395, MTH495, MTH498, MTH499 */))),
@@ -839,7 +839,7 @@ extends Program(
               GEO428, ESC428, GEO430, ESC430, GEO460, ESC460)),
   Select("Techniques course", 1,
          List(GEO345, ESC345, GEO355, GEO385, ESC385,
-              GEO390, ESC390, GEO440, ESC440,
+              GEO390, ESC390, ESC412, GEO412, GEO440, ESC440,
               GEO445, GEO455, GEO485, GEO488)),
   Select("Elective", 1,
          List(ARC347,

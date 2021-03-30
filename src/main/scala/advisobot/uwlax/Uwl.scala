@@ -136,6 +136,7 @@ object Suggestions {
     new ScheduleSuggestion("Electives", units)
   def upperMinorElectivesTotalling(units: Int) =
     new ScheduleSuggestion("Minor electives\\\\(300/400-lv.)", units)
+  val electivesRange = new ScheduleSuggestion("Elective(s)", UnitsRange(1,3))
   val LAB_SCIENCE = new ScheduleSuggestion("A lab science", 4)
   val CS_ELECTIVE = new ScheduleSuggestion("CS elective", 3)
   val UPPER_CS_ELECTIVE =
