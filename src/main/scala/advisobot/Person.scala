@@ -134,8 +134,8 @@ class Person(
   def gpa(term: Option[Term] = None,
           cumulative: Boolean = false,
           prefix: Option[String] = None): Option[Double] = {
-    var subtotal: Double = 0.0
-    var units: Double = 0.0
+
+    val courseResults: HashMap[Course, Double] = new HashMap[Course, Double]
     for ((thisTerm, results) <- past;
          if (term match {
            case None => true
@@ -147,16 +147,20 @@ class Person(
            case Some(p) => course.prefix equals p
          })) {
       grade.gpa match {
-        case Some(value) => {
-          units = units + course.units
-          subtotal = subtotal + value * course.units
-        }
+        case Some(value) => courseResults.put(course, value)
         case None => { }
       }
     }
 
+    var subtotal: Double = 0.0
+    var units: Double = 0.0
+    for ((course, value) <- courseResults) {
+      units = units + course.units
+      subtotal = subtotal + value * course.units
+    }
+
     units match {
-      case 0 => None
+      case 0.0 => None
       case _ => Some(subtotal/units)
     }
   }

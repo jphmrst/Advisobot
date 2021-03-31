@@ -46,8 +46,9 @@ trait Viewer {
             satisfiers: Map[Requirement,List[Achievement]]): Unit
 }
 
-class Grade(val pass: Boolean, val display: String,
-            val gpa: Option[Double]=None) {
+class Grade(val pass: Boolean,
+            val display: String,
+            val gpa: Option[Double] = None) {
   override def toString(): String = display
 }
 
