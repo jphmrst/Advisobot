@@ -293,7 +293,11 @@ extends PersonReport {
             res
           }
 
-          if (thisShrinkNotes > 5) {
+          if (thisShrinkNotes > 7) {
+            doc ++= "\\fontsize{6}{7}\\selectfont "
+          } else if (thisShrinkNotes > 6) {
+            doc ++= "\\fontsize{7}{8}\\selectfont "
+          } else if (thisShrinkNotes > 5) {
             doc ++= "\\fontsize{8}{9}\\selectfont "
           } else if (thisShrinkNotes > 4) {
             doc ++= "\\fontsize{9}{10}\\selectfont "

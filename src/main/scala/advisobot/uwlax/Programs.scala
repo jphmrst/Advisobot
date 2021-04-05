@@ -332,9 +332,9 @@ extends Program("Cmptnl. sci. min.", "Computational science minor requirements",
                 Complete(Task("From non-major", 3)),
 
                 WithConditions(
-                  "Natural science introductory sequence",
+                  "Introductory sequence in natural science",
                   AllSatisfying(
-                    "Natural science introductory sequence",
+                    "Introductory natural science sequence",
                     Select("Options", "Options", 1,
                            List(PHY103, PHY104, PHY203, PHY204,
                                 ESC101, ESC221, ESC222,
@@ -344,7 +344,7 @@ extends Program("Cmptnl. sci. min.", "Computational science minor requirements",
                     UncheckedCondition("Must be a two-class introductory sequence")
                   )),
                 WithConditions(
-                  "Additional natural science introductory courses",
+                  "Additional introductory natural science courses",
                   AllSatisfying(
                     "Additional natural science introductory courses",
                     Select("Options", "Options", 1,
@@ -357,21 +357,49 @@ extends Program("Cmptnl. sci. min.", "Computational science minor requirements",
                   ))
 ) {
 
-  val suggestMajor: ScheduleSuggestion =
+  val suggestAdvMajor: ScheduleSuggestion =
     new ScheduleSuggestion(
-      new DescribedClasses("In-major cmptnl.\\\\sci. elective"),
+      new DescribedClasses("In-major\\\\adv.\\ elective"),
       UnitsRange(3,5))
 
-  val suggestNonmajor: ScheduleSuggestion =
+  val suggestAdvNonmajor: ScheduleSuggestion =
     new ScheduleSuggestion(
-      new DescribedClasses("Non-major cmptnl.\\\\sci. elective"),
+      new DescribedClasses("Non-major \\\\adv.\\ elective"),
+      UnitsRange(3,5))
+
+  val suggestOtherNatSci: ScheduleSuggestion =
+    new ScheduleSuggestion(
+      new DescribedClasses("Other nat.\\ sci."),
+      UnitsRange(3,5))
+
+  val suggestOtherNatSciUpper: ScheduleSuggestion =
+    new ScheduleSuggestion(
+      new DescribedClasses("Other nat.\\ sci.\\\\(300/400-lv.)"),
       UnitsRange(3,5))
 
   override def viewers: List[Viewer] =
-    List(new SimpleViewer("Computational science minor", 4,  0, 1, 2, 3),
+    List(new SimpleViewer("Computational science minor", 2,  0, 1),
          ConditionsViewer(req=4, columns=2),
-         ConditionsViewer(req=5, columns=2))
+         ConditionsViewer(req=5, columns=2),
+         new SimpleViewer("Advanced (300/400-level) electives", 2,  2, 3))
 }
+
+object UWLupperLevelUnits
+extends Program("Total units",
+                "UWL total unit requirements",
+                WithConditions("UWL total unit requirements",
+                               AllSatisfying("From all classes",
+                                             Select("From all classes", 1,
+                                                    List(AnyClass))),
+                               List(
+                                 UnitsCondition("total", 120),
+                                 UnitsCondition("at 300/400-level", 40, _.number>=300)
+                               )
+                             ))
+{
+  override def viewers: List[Viewer] = List(ConditionsViewer(req=0, columns=5))
+}
+
 
 /** Requirements for a minor in business administration (as of 2018) */
 object BusinessAdminMinor2018

@@ -229,6 +229,9 @@ object CourseOfUnits {
                                      && course.units >= units))
 }
 
+object AnyClass
+extends CoursePredicate("any", (course) => true)
+
 object AtLevel {
   def apply(desc:String, prefix: String,
             levelPred: (Int) => Boolean): CoursePredicate =
