@@ -170,6 +170,7 @@ object Suggestions {
     new ScheduleSuggestion("Non-CS", UnitsRange.atLeast(3))
   val UPPER_NON_CS_3unitsplus =
     new ScheduleSuggestion("Non-CS 300$^+$-lv.", UnitsRange.atLeast(3))
+  val OTHER_RETAKE = new ScheduleSuggestion("Other re-take", 3)
 }
 
 // Gen-eds on
