@@ -90,6 +90,9 @@ extends advisobot.core.Advisees(people:_*) {
 
     doc ++= "\\\\Total upper-level units after planned period: "
     postPlanUpperUnits.toLaTeX(doc)
+    if (postPlanUpperUnits.lowerBound < 40) {
+      doc ++= " (minimum 40 required)"
+    }
     doc ++= "\n"
   }
 }

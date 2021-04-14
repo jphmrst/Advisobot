@@ -130,6 +130,7 @@ object Fall14   extends Semester(Fall,   2014, 2154, Spring15, Spring15)
 
 object Suggestions {
   val ELECTIVE = new ScheduleSuggestion("Elective", 3)
+  val UPPER_ELECTIVE = new ScheduleSuggestion("Elective\\\\(300-400 lv.)", 3, isUpper = true)
   val ELECTIVE1 = new ScheduleSuggestion("Elective", 1)
   val ELECTIVE2 = new ScheduleSuggestion("Elective", 2)
   def electivesTotalling(units: Int) =
