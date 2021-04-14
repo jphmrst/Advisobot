@@ -19,16 +19,7 @@ extends PersonReport {
   def writeReport(doc: LaTeXdoc, who: Person)(implicit advisees: Advisees): Unit = {
     val forTerm = advisees.forTerm
     val lastPast = advisees.lastPast
-
-    // Calculate a recommended schedule if appropriate.
-    val recommended = who.recommend.get(forTerm) match {
-      case Some(_) => who.recommend
-      case None => who.calculateRecommendationIfEmpty && who.active match {
-        case false => who.recommend
-        // TODO Uncomment if developing this
-        case true => who.recommend // who.planSched(forTerm)
-      }
-    }
+    val recommended = who.getRecommended(advisees)
 
     val disclaimerSuffix = """    \vspace*{\fill}
     \par
@@ -39,12 +30,7 @@ extends PersonReport {
     Consult ${advisees.recordsSystemName} for official status
     information.}}""";
 
-    var nowOrForward = SortedMap[Term, List[ScheduleSuggestion]]()
-    for ((semester, plan) <- recommended) {
-      if (lastPast < semester) {
-        nowOrForward = nowOrForward ++ SortedMap(semester -> plan)
-      }
-    }
+    var nowOrForward = who.plannedAfter(advisees)
 
     traceBegin("writeHandout", "%s %s", who.firstNames, who.lastName)
     doc.classOptions = Some("11pt")
@@ -129,25 +115,7 @@ extends PersonReport {
       }
     }
 
-    val pastUnits = who.unitsCompleted
-    val currentUnits = who.current.foldLeft(0)(_+_.units)
-    val totalUnits = who.unitsProspective
-    if (totalUnits > 0) {
-      doc ++= "  \\\\ \\multicolumn{2}{|l|}{Units}\n"
-      doc ++= "  \\\\ \\multicolumn{2}{|c|}{\\large \\textbf{Previously --- "
-      doc ++= pastUnits.toString()
-      doc ++= "}}\n"
-      doc ++= "  \\\\ \\multicolumn{2}{|c|}{\\large \\textbf{Currently --- "
-      doc ++= currentUnits.toString()
-      doc ++= "}}\n"
-      doc ++= "  \\\\ \\multicolumn{2}{|c|}{\\large \\textbf{Total --- "
-      doc ++= totalUnits.toString()
-      doc ++= "}}\n"
-    } else {
-      doc ++= """  \\ \multicolumn{2}{|l|}{Units earned}
-      \\ \multicolumn{2}{|c|}{\writegap}
-"""
-    }
+    advisees.writeProspectiveUnits(doc, who)
 
     val filesys = FileSystems.getDefault()
     val photosDir: Path = filesys.getPath(advisees.photoDirectory);
@@ -458,7 +426,6 @@ extends PersonReport {
       }
       doc ++= "\\section*{Forward plan}\n\\raggedright\n"
       doc ++= "\\begin{multicols}{4}\n"
-      var postPlanUnits: UnitsRange = new UnitsRange(who.unitsProspective)
 
       for ((semester, plan) <- nowOrForward) {
         doc ++= """\begin{tabular}[t]{|c|l|} \multicolumn{2}{c}{\emph{"""
@@ -475,14 +442,12 @@ extends PersonReport {
         }
         doc ++= """\\ \hline \multicolumn{2}{c}{"""
         totalUnits.toLaTeX(doc)
-        postPlanUnits = postPlanUnits.and(totalUnits)
         doc ++= " total units}\n"
         doc ++= "\\end{tabular} \\hspace{1ex}\n"
       }
 
-      doc ++= "\\end{multicols}\nTotal units after planned period: "
-      postPlanUnits.toLaTeX(doc)
-      doc ++= "\n"
+      doc ++= "\\end{multicols}\n"
+      advisees.writePostplanUnits(doc, who)
     }
 
     traceEnd("writeHandout", "%s %s", who.firstNames, who.lastName)

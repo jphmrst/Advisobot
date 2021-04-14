@@ -4,7 +4,7 @@ import scala.collection.mutable.HashMap
 import org.maraist.latex.LaTeXdoc
 import advisobot.core.{Program,Requirement,Select,Person,Grade,Term,
                        Achievement,SideCondition,Viewer,CoursePredicate,
-                       ScheduleSuggestion, UnitsRange}
+                       UnitsRange}
 import advisobot.builder._
 
 // -----------------------------------------------------------------
@@ -134,17 +134,24 @@ object Suggestions {
   val ELECTIVE2 = new ScheduleSuggestion("Elective", 2)
   def electivesTotalling(units: Int) =
     new ScheduleSuggestion("Electives", units)
+  def upperElectiveRange(units: UnitsRange) =
+    new ScheduleSuggestion("Elective\\\\(300/400-lv.)", units, isUpper = true)
+  def upperElectivesRange(units: UnitsRange) =
+    new ScheduleSuggestion("Elective(s)\\\\(300/400-lv.)", units, isUpper = true)
   def upperMinorElectivesTotalling(units: Int) =
-    new ScheduleSuggestion("Minor electives\\\\(300/400-lv.)", units)
+    new ScheduleSuggestion("Minor electives\\\\(300/400-lv.)", units, isUpper = true)
   val electivesRange = new ScheduleSuggestion("Elective(s)", UnitsRange(1,3))
   val LAB_SCIENCE = new ScheduleSuggestion("A lab science", 4)
   val CS_ELECTIVE = new ScheduleSuggestion("CS elective", 3)
   val UPPER_CS_ELECTIVE =
-    new ScheduleSuggestion("CS elective\\\\(300/400-lv.)", 3)
-  val GRAD_CS_ELECTIVE = new ScheduleSuggestion("CS elective (500-lv.)", 3)
+    new ScheduleSuggestion("CS elective\\\\(300/400-lv.)", 3, isUpper = true)
+  val GRAD_CS_ELECTIVE = new ScheduleSuggestion("CS elective (500-lv.)", 3, isUpper = true)
   val MATH_ELECTIVE = new ScheduleSuggestion("Math elective", 3)
   val MINOR_ELECTIVE3 = new ScheduleSuggestion("Minor elective", 3)
-  val UPPER_MINOR_ELECTIVE3 = new ScheduleSuggestion("Minor elective\\\\(300/400-lv.)", 3)
+  val UPPER_MINOR_ELECTIVE3 = new ScheduleSuggestion("Minor elective\\\\(300/400-lv.)", 3,
+                                                     isUpper = true)
+  val UPPER_MINOR_ELECTIVES6 = new ScheduleSuggestion("Minor electives\\\\(300/400-lv.)", 6,
+                                                      isUpper = true)
   val MINOR_ELECTIVE = new ScheduleSuggestion("Minor elective", UnitsRange.atLeast(1))
   val GENED = new ScheduleSuggestion("Gen.\\ ed. elective",
                                      new UnitsRange(2,3))
@@ -153,23 +160,27 @@ object Suggestions {
   val GENED2 = new ScheduleSuggestion("2-unit (arts) gen.\\ ed.", 2)
   val NON_CS = new ScheduleSuggestion("Non-CS", UnitsRange.atLeast(2))
   val NON_CS3 = new ScheduleSuggestion("Non-CS", 3)
-  val UPPER_NON_CS = new ScheduleSuggestion("Non-CS 300$^+$-lv.", UnitsRange.atLeast(1))
-  val UPPER_NON_CS3 = new ScheduleSuggestion("Non-CS 300$^+$-lv.", 3)
+  val UPPER_NON_CS = new ScheduleSuggestion("Non-CS 300$^+$-lv.", UnitsRange.atLeast(1),
+                                            isUpper = true)
+  val UPPER_NON_CS3 = new ScheduleSuggestion("Non-CS 300$^+$-lv.", 3, isUpper = true)
   val IS_REQ = new ScheduleSuggestion("I.S. requirement", 3)
   val PSY_ELECT = new ScheduleSuggestion("PSY elective", 3)
   val PHIL_OTHER = new ScheduleSuggestion("Other phil. course", 3)
   val MINOR_REQ = new ScheduleSuggestion("Req. for minor", 3)
   val MINOR_ELECT = new ScheduleSuggestion("Elect. for minor", 3)
+  val UPPER_MINOR_ELECT = new ScheduleSuggestion("Elect. for minor\\\\(300/400-lv.)", 3,
+                                                 isUpper = true)
   val HIST_ELECT = new ScheduleSuggestion("History elective", 3)
   val HIST_SURVEY = new ScheduleSuggestion("History survey", 3)
   val SPAN_WRITTEN = new ScheduleSuggestion("Span. writing prfcy.", 3)
   val SPAN_ORAL = new ScheduleSuggestion("Span. oral prfcy.", 3)
   val SPAN_ELECTIVE = new ScheduleSuggestion("Spanish elective", 3)
-  val ECON_ELECTIVE = new ScheduleSuggestion("Econ. elective\\\\(300/400-lv.)", 3)
+  val ECON_ELECTIVE = new ScheduleSuggestion("Econ. elective\\\\(300/400-lv.)", 3,
+                                             isUpper = true)
   val NON_CS_3unitsplus =
     new ScheduleSuggestion("Non-CS", UnitsRange.atLeast(3))
   val UPPER_NON_CS_3unitsplus =
-    new ScheduleSuggestion("Non-CS 300$^+$-lv.", UnitsRange.atLeast(3))
+    new ScheduleSuggestion("Non-CS 300$^+$-lv.", UnitsRange.atLeast(3), isUpper = true)
   val OTHER_RETAKE = new ScheduleSuggestion("Other re-take", 3)
 }
 

@@ -40,6 +40,9 @@ extends LaTeXRenderable {
   def hasPrerequisite(preqCand: ScheduleSuggestion): Boolean =
     description.hasPrerequisite(preqCand.description)
 
+  def +(append: String): ScheduleSuggestion =
+    new ScheduleSuggestion(description + append, units)
+
   override def toString(): String =
     "Suggestion<" + units.toString() + ": " + description.toString()
 }

@@ -77,6 +77,54 @@ abstract class Advisees(people:Person*) {
     reports()
   }
 
+  /**
+   * Assume that the document is in a {tabular} environment with two columns, and which
+   * should maintain an outer border.  Each row should <b>begin</b> with a new row break.
+   * The default implementation uses
+   * <pre>\\ \multicolumn{2}{|l|}{blah blah}</pre>
+   * and
+   * <pre>\\ \multicolumn{2}{|c|}{blah blah}</pre>
+   * for its content.
+   */
+  def writeProspectiveUnits(doc: LaTeXdoc, who: Person) = {
+    val pastUnits = who.unitsCompleted
+    val currentUnits = who.current.foldLeft(0)(_+_.units)
+    val totalUnits = who.unitsProspective
+    if (totalUnits > 0) {
+      doc ++= "  \\\\ \\multicolumn{2}{|l|}{Units}\n"
+      doc ++= "  \\\\ \\multicolumn{2}{|c|}{\\large \\textbf{Previously --- "
+      doc ++= pastUnits.toString()
+      doc ++= "}}\n"
+      doc ++= "  \\\\ \\multicolumn{2}{|c|}{\\large \\textbf{Currently --- "
+      doc ++= currentUnits.toString()
+      doc ++= "}}\n"
+      doc ++= "  \\\\ \\multicolumn{2}{|c|}{\\large \\textbf{Total --- "
+      doc ++= totalUnits.toString()
+      doc ++= "}}\n"
+    } else {
+      doc ++= """  \\ \multicolumn{2}{|l|}{Units earned}
+      \\ \multicolumn{2}{|c|}{\writegap}
+"""
+    }
+  }
+
+  def writePostplanUnits(doc: LaTeXdoc, who: Person) = {
+    var postPlanUnits: UnitsRange = new UnitsRange(who.unitsProspective)
+    var nowOrForward = who.plannedAfter(this)
+
+    for ((semester, plan) <- nowOrForward) {
+      var totalUnits = UnitsRange.exactly(0)
+      for (item <- plan) {
+        totalUnits = totalUnits and item.units
+      }
+      postPlanUnits = postPlanUnits and totalUnits
+    }
+
+    doc ++= "Total units after planned period: "
+    postPlanUnits.toLaTeX(doc)
+    doc ++= "\n"
+  }
+
   // =================================================================
 
   import advisobot.core.ScheduleSuggestion.CandSchedule

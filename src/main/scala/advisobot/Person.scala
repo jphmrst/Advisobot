@@ -263,6 +263,33 @@ class Person(
 
     searcher.search(getNaiveSchedule(base))
   }
+
+  def getRecommended(advisees: Advisees): SortedMap[Term, List[ScheduleSuggestion]] = {
+    val forTerm = advisees.forTerm
+
+    // Calculate a recommended schedule if appropriate.
+    recommend.get(forTerm) match {
+      case Some(_) => recommend
+      case None => calculateRecommendationIfEmpty && active match {
+        case false => recommend
+        // TODO Uncomment if developing this
+        case true => recommend // planSched(forTerm)
+      }
+    }
+  }
+
+  def plannedAfter(advisees: Advisees): SortedMap[Term, List[ScheduleSuggestion]] = {
+    val lastPast = advisees.lastPast
+    val recommended = getRecommended(advisees)
+
+    var nowOrForward = SortedMap[Term, List[ScheduleSuggestion]]()
+    for ((semester, plan) <- recommended) {
+      if (lastPast < semester) {
+        nowOrForward = nowOrForward ++ SortedMap(semester -> plan)
+      }
+    }
+    nowOrForward
+  }
 }
 
 object Person {

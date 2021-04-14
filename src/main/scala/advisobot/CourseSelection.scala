@@ -27,6 +27,7 @@ trait CourseSelection extends LaTeXRenderable {
     case Some(cs) => cs == c
     case None => false
   }
+  def +(s: String): CourseSelection
 }
 object CourseSelection {
   implicit def fromCourse(cl: Course): CourseSelection = new SpecificClass(cl)
@@ -43,10 +44,12 @@ class SpecificClass(val cl: Course) extends CourseSelection {
     later.prerequisites.exists(_.isCourse(cl))
   }
   override def course: Option[Course] = Some(cl)
+  override def +(s: String): CourseSelection = new DescribedClasses(plainText + s)
   override def toString(): String = "Specific[" + cl.toString() + "]"
 }
 
-class DescribedClasses(val desc: String) extends CourseSelection {
+class DescribedClasses(val desc: String)
+extends CourseSelection {
   override def toLaTeX(doc:LaTeXdoc): Unit = {
     doc ++= "\\begin{tabular}{@{}c@{}}"
     doc ++= desc
@@ -56,9 +59,11 @@ class DescribedClasses(val desc: String) extends CourseSelection {
   override def hasPrerequisite(cs : CourseSelection): Boolean = false
   override def isPrerequisiteOf(c : Course): Boolean = false
   override def course: Option[Course] = None
+  override def +(s: String): CourseSelection = new DescribedClasses(desc + s)
 }
 
-class PickOneSelection(val selections: Seq[CourseSelection])
+class PickOneSelection(val selections: Seq[CourseSelection],
+                       val note: Option[String] = None)
 extends CourseSelection {
   override def toLaTeX(doc:LaTeXdoc): Unit = {
     doc ++= """\begin{tabular}{@{}c@{}}"""
@@ -67,6 +72,13 @@ extends CourseSelection {
       doc ++= sep
       selection.toLaTeX(doc)
       sep = """\\ -or- \\ """
+    }
+    note match {
+      case None => { }
+      case Some(s) => {
+        doc ++= """\\"""
+        doc ++= s
+      }
     }
     doc ++= """\end{tabular}"""
   }
@@ -85,6 +97,13 @@ extends CourseSelection {
   override def hasPrerequisite(cs : CourseSelection): Boolean = false
   override def isPrerequisiteOf(c : Course): Boolean = false
   override def course: Option[Course] = None
+  override def +(s: String): CourseSelection = new PickOneSelection(
+    selections,
+    note match {
+      case None => Some(s)
+      case Some(given) => Some(given + s)
+    }
+  )
 }
 
 object PickOne {
