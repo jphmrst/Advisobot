@@ -935,6 +935,48 @@ extends Program(
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+/** Requirements for a minor in history (as of 2019) */
+object EnvStudiesLists {
+  val natural = List(BIO307, BIO341, BIO441, BIO464, BIO473, BIO476,
+                     CHM412,
+                     ESC101, ESC211,
+                     GEO200, GEO425, GEO427, GEO460,
+                     MIC350, MIC434)
+  val social = List(ARC404, ECO346, ESC321, PH335, PSY302, PUB338,
+                    REC306, REC345, SOC311, SOC328, SOC332, ERS363, SOC363)
+  val arts = List(ENG387, HIS317, HIS321, HIS338, HIS379, PHL341, PHL425)
+}
+object EnvironmentalStudiesMinor2021
+extends Program(
+  "Environmental studies minor", "Environmental studies minor",
+  ENV201, ENV301, ENV303, ENV496,
+  Select("Nat.\\ sci.", 1,
+         List(BIO307, BIO341, BIO441, BIO464, BIO473, BIO476,
+              CHM412, ESC101, ESC211, GEO200, GEO425, GEO427, GEO460,
+              MIC350, MIC434)),
+  Select("Soc.\\ sci.", 1,
+         List(ARC404, ECO346, ESC321, PH335, PSY302, PUB338,
+              REC306, REC345, SOC311, SOC328, SOC332, ERS363, SOC363)),
+  Select("A\\&H", 1,
+         List(ENG387, HIS317, HIS321, HIS338, HIS379, PHL341, PHL425)),
+  Select("Elective", 1,
+         List(BIO307, BIO341, BIO441, BIO464, BIO473, BIO476,
+              CHM412, ESC101, ESC211, GEO200, GEO425, GEO427, GEO460,
+              MIC350, MIC434,
+              ARC404, ECO346, ESC321, PH335, PSY302, PUB338,
+              REC306, REC345, SOC311, SOC328, SOC332, ERS363, SOC363,
+              ENG387, HIS317, HIS321, HIS338, HIS379, PHL341,
+              CourseOfUnits("ENV", 450), CourseOfUnits("ENV", 499)))
+) {
+  override def viewers: List[Viewer] =
+    List(
+      new SimpleViewer("Environmental studies core", 4,
+                       0, 1, 2, 3, 4, 5, 6, 7)
+    )
+}
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 /** Requirements for a minor in women's studies (as of 2019) */
 object WomensStudiesMinor2019
 extends Program(
