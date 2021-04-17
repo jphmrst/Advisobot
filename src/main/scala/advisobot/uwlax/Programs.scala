@@ -4,7 +4,7 @@ import scala.collection.mutable.HashMap
 import org.maraist.latex.LaTeXdoc
 import advisobot.core.{Complete,Program,Requirement,Select,Person,Grade,Term,
                        Achievement,SideCondition,Viewer,CoursePredicate,
-                       ScheduleSuggestion, DescribedClasses, UnitsRange, Task}
+                       DescribedClasses, UnitsRange, Task}
 import advisobot.builder._
 import advisobot.builder.Functions._
 import uwlcs.advisobot._
@@ -973,6 +973,18 @@ extends Program(
       new SimpleViewer("Environmental studies core", 4,
                        0, 1, 2, 3, 4, 5, 6, 7)
     )
+
+  val UPPER_SOC_SCI =
+    new ScheduleSuggestion(
+      new DescribedClasses("Env.\\ stds.\\\\soc.\\ sci.\\\\(300/400-lv.)"),
+      UnitsRange(3,5),
+      isUpper = true)
+  val UPPER_AH =
+    new ScheduleSuggestion(
+      new DescribedClasses("Env.\\ stds.\\\\arts \\& num.\\\\(300/400-lv.)"),
+      UnitsRange(3,5),
+      isUpper = true)
+
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
