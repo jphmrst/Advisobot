@@ -58,7 +58,13 @@ extends Achievement with Ordered[Course] with LaTeXRenderable {
 
   override def compare(that: Course): Int =
     (prefix compare that.prefix) match {
-      case 0 => number compare that.number
+      case 0 => (number compare that.number) match {
+        case 0 => (suffix zip that.suffix) match {
+          case None => 0
+          case Some((s1,s2)) => s1 compare s2
+        }
+        case z => z
+      }
       case x => x
     }
 
